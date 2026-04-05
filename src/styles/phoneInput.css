@@ -1,0 +1,75 @@
+/* Custom styles for react-phone-number-input */
+.PhoneInput {
+  width: 100%;
+}
+
+.PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.PhoneInputInput:focus {
+  outline: none;
+  border-color: #84cc16;
+  box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.1);
+}
+
+.PhoneInputCountry {
+  margin-right: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background-color: white;
+}
+
+.PhoneInputCountrySelect {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.PhoneInputCountrySelect:focus {
+  outline: none;
+}
+
+.PhoneInputCountryIcon {
+  width: 1.5rem;
+  height: 1rem;
+  margin-right: 0.25rem;
+}
+
+.PhoneInputCountrySelectArrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 0.25rem;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #6b7280;
+  opacity: 0.6;
+}
+
+/* Guest page themed overrides */
+.guest-phone-input .PhoneInputInput {
+  padding: 0.75rem;
+  border: 1px solid rgba(80, 94, 77, 0.3);
+  border-radius: 0.5rem;
+  color: #505e4d;
+}
+
+.guest-phone-input .PhoneInputInput:focus {
+  outline: none;
+  border-color: #505e4d;
+  box-shadow: 0 0 0 3px rgba(80, 94, 77, 0.12);
+}
+
+.guest-phone-input .PhoneInputCountry {
+  border: 1px solid rgba(80, 94, 77, 0.3);
+  border-radius: 0.5rem;
+  background-color: #fff;
+}

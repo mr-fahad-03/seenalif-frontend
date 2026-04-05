@@ -1,0 +1,43 @@
+{
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "framework": "vite",
+    "rewrites": [
+        {
+            "source": "/ae-en/robots.txt",
+            "destination": "/robots.txt"
+        },
+        {
+            "source": "/ae-ar/robots.txt",
+            "destination": "/robots.txt"
+        },
+        {
+            "source": "/ae-en/robot.txt",
+            "destination": "/robots.txt"
+        },
+        {
+            "source": "/ae-ar/robot.txt",
+            "destination": "/robots.txt"
+        },
+        {
+            "source": "/robot.txt",
+            "destination": "/robots.txt"
+        },
+        {
+            "source": "/ae-en/sitemap.xml",
+            "destination": "https://api.grabatoz.ae/sitemap.xml"
+        },
+        {
+            "source": "/ae-ar/sitemap.xml",
+            "destination": "https://api.grabatoz.ae/sitemap.xml"
+        },
+        {
+            "source": "/sitemap.xml",
+            "destination": "https://api.grabatoz.ae/sitemap.xml"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
+        }
+    ]
+}

@@ -1,0 +1,186 @@
+/* TipTap Content Renderer Styles - High Specificity to Override Other Styles */
+
+/* Force list styles with high specificity */
+.tiptap-content.prose ul,
+.tiptap-content ul {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+  margin: 0.75rem 0 !important;
+}
+
+.tiptap-content.prose ol,
+.tiptap-content ol {
+  list-style-type: decimal !important;
+  padding-left: 1.5rem !important;
+  margin: 0.75rem 0 !important;
+}
+
+.tiptap-content.prose li,
+.tiptap-content li {
+  display: list-item !important;
+  margin: 0.25rem 0 !important;
+  line-height: 1.6 !important;
+  list-style-position: outside !important;
+}
+
+.tiptap-content ul ul,
+.tiptap-content ol ol,
+.tiptap-content ul ol,
+.tiptap-content ol ul {
+  margin: 0.5rem 0 !important;
+  padding-left: 1.5rem !important;
+}
+
+/* Force heading styles with high specificity */
+.tiptap-content.prose h1,
+.tiptap-content h1 {
+  font-size: 2.25rem !important;
+  line-height: 2.5rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  margin: 1.5rem 0 1rem 0 !important;
+}
+
+.tiptap-content.prose h2,
+.tiptap-content h2 {
+  font-size: 1.875rem !important;
+  line-height: 2.25rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  margin: 1.25rem 0 0.75rem 0 !important;
+}
+
+.tiptap-content.prose h3,
+.tiptap-content h3 {
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  margin: 1rem 0 0.5rem 0 !important;
+}
+
+.tiptap-content.prose h4,
+.tiptap-content h4 {
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  margin: 0.75rem 0 0.5rem 0 !important;
+}
+
+.tiptap-content.prose h5,
+.tiptap-content h5 {
+  font-size: 1.125rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  margin: 0.75rem 0 0.5rem 0 !important;
+}
+
+.tiptap-content.prose h6,
+.tiptap-content h6 {
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  margin: 0.75rem 0 0.5rem 0 !important;
+}
+
+/* Paragraph styling with high specificity */
+.tiptap-content.prose p,
+.tiptap-content p {
+  font-size: 1rem !important;
+  line-height: 1.75rem !important;
+  margin: 0.75rem 0 !important;
+  color: #374151 !important;
+}
+
+/* Text alignment with inline styles from TipTap */
+.tiptap-content [style*="text-align: left"] {
+  text-align: left !important;
+}
+
+.tiptap-content [style*="text-align: center"] {
+  text-align: center !important;
+}
+
+.tiptap-content [style*="text-align: right"] {
+  text-align: right !important;
+}
+
+/* Link styling */
+.tiptap-content.prose a,
+.tiptap-content a {
+  color: #2563eb !important;
+  text-decoration: underline !important;
+  font-weight: 500 !important;
+}
+
+.tiptap-content.prose a:hover,
+.tiptap-content a:hover {
+  color: #1e40af !important;
+}
+
+/* Image styling */
+.tiptap-content.prose img,
+.tiptap-content img {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  margin: 1rem 0 !important;
+}
+
+/* Bold, italic, and underline text */
+.tiptap-content.prose strong,
+.tiptap-content strong {
+  font-weight: 700 !important;
+  color: #111827 !important;
+}
+
+.tiptap-content.prose em,
+.tiptap-content em {
+  font-style: italic !important;
+}
+
+.tiptap-content.prose u,
+.tiptap-content u {
+  text-decoration: underline !important;
+}
+
+/* Better spacing for content blocks */
+.tiptap-content > *:first-child {
+  margin-top: 0 !important;
+}
+
+.tiptap-content > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Override any conflicting styles from other CSS */
+.tiptap-content * {
+  box-sizing: border-box;
+}
+
+/* Ensure proper display for list items inside paragraphs */
+.tiptap-content.prose li p,
+.tiptap-content li p {
+  margin: 0 !important;
+  display: inline !important;
+}
+
+/* Specifically target Tailwind's list style reset */
+.tiptap-content ul[class] {
+  list-style-type: disc !important;
+}
+
+.tiptap-content ol[class] {
+  list-style-type: decimal !important;
+}
+
+/* Additional specificity for stubborn Tailwind resets */
+.prose .tiptap-content ul,
+.prose .tiptap-content ol {
+  list-style-type: revert !important;
+  padding-left: 1.5rem !important;
+}
