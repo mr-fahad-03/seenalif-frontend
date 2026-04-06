@@ -2222,8 +2222,9 @@ const ProductDetails = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-96">
-        <img src="/g.png" alt="Loading" className="w-24 h-24 animate-bounce" style={{ animationDuration: "1.5s" }} />
+      <div className="flex h-96 flex-col items-center justify-center gap-3">
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-[#505e4d]/25 border-t-[#505e4d]" aria-label="Loading product details" />
+        <p className="text-sm text-[#505e4d]/80">Loading product details...</p>
       </div>
     )
   }

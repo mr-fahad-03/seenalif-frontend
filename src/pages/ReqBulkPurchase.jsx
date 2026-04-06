@@ -310,32 +310,32 @@ export default function ReqBulkPurchase() {
   };
 
   return (
-    <div className="font-sans text-gray-800">
+    <div className="font-sans text-[#505e4d] bg-white">
       {/* Header */}
-      <header className="bg-white shadow-md py-4 px-6 text-center">
-        <p className="text-sm text-green-700 font-semibold">Your One-Stop Solution for B2B Business Needs in UAE</p>
+      <header className="bg-white border-b border-[#505e4d]/15 py-4 px-6 text-center">
+        <p className="text-sm text-[#505e4d] font-semibold">Your One-Stop Solution for B2B Business Needs in UAE</p>
       </header>
 
       {/* Hero Section */}
-      <section className="bg-green-100 py-6 px-4 text-center">
-        <h1 className="text-2xl md:text-3xl font-bold text-green-800">Grabatoz - B2B Dedicated Wholesale Place</h1>
-        <p className="mt-2 text-sm md:text-base max-w-3xl mx-auto text-gray-700">
-          Our trusted B2B wholesale palace will cater to all your business needs
+      <section className="bg-[#505e4d] py-6 px-4 text-center">
+        <h1 className="text-2xl md:text-3xl font-bold text-white">Seenalif - B2B Dedicated Wholesale Place</h1>
+        <p className="mt-2 text-sm md:text-base max-w-3xl mx-auto text-white/90">
+          Our trusted B2B wholesale platform will cater to all your business needs
         </p>
       </section>
 
       {/* Intro Section */}
       <section className="py-8 px-4 md:px-16 text-center">
-        <p className="max-w-3xl mx-auto text-gray-700">
-          Welcome to Grabatoz.com your one-stop sourcing platform for all your business needs.
-          Grabatoz.com, the omnichannel retailer that was established in Dubai, UAE. We are a business
+        <p className="max-w-3xl mx-auto text-[#505e4d]/85">
+          Welcome to Seenalif.com your one-stop sourcing platform for all your business needs.
+          Seenalif.com, the omnichannel retailer that was established in Dubai, UAE. We are a business
           focused marketplace where small and medium businesses (SMBs) discover, interact, and buy
           products and services by engaging with brands and authorized sellers.
         </p>
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-gray-100 py-10 px-4 md:px-16">
+      <section className="bg-white border-y border-[#505e4d]/10 py-10 px-4 md:px-16">
         <div className="flex flex-col md:flex-row items-center gap-8">
           <img
             src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg"
@@ -343,12 +343,12 @@ export default function ReqBulkPurchase() {
             className="w-full md:w-1/2 rounded-md"
           />
           <div className="md:w-1/2">
-            <h2 className="text-xl font-bold mb-2">Benefits of being on Grabatoz.com</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="text-xl font-bold mb-2">Benefits of being on Seenalif.com</h2>
+            <p className="text-[#505e4d]/85 mb-4">
               As a customer and as a business buyer, the platform offers great benefits and opportunities
               for small and medium businesses.
             </p>
-            <button className="bg-lime-500 text-white px-4 py-2 rounded hover:bg-green-700" onClick={() => setShowCallbackModal(true)}>
+            <button className="bg-[#505e4d] text-white px-4 py-2 rounded hover:bg-[#445241]" onClick={() => setShowCallbackModal(true)}>
               Contact Sales
             </button>
           </div>
@@ -367,7 +367,7 @@ export default function ReqBulkPurchase() {
             'Invoice',
             'Delivery & Payment',
           ].map((step, i) => (
-            <div key={i} className="bg-white border-lime-500 border-2 shadow-md p-4 rounded-md text-sm font-medium">
+            <div key={i} className="bg-white border-[#505e4d] border-2 p-4 rounded-md text-sm font-medium">
               <p className="mb-2 font-bold">Step {i + 1}</p>
               <p>{step}</p>
             </div>
@@ -376,11 +376,11 @@ export default function ReqBulkPurchase() {
       </section>
 
       {/* Why Bulk Purchase */}
-      <section className="bg-gray-50 py-12 px-4 md:px-16">
+      <section className="bg-white py-12 px-4 md:px-16">
         <h2 className="text-xl font-bold text-center mb-10">
-          Why Bulk Purchase from Grabatoz.com?
+          Why Bulk Purchase from Seenalif.com?
         </h2>
-        <div className="grid gap-6  md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-3">
           {[
             {
               title: 'Trusted Platform',
@@ -407,15 +407,15 @@ export default function ReqBulkPurchase() {
               desc: 'Add team members and set buyer/approver roles for a seamless experience.',
             },
           ].map((item, i) => (
-            <div key={i} className="bg-white p-6 border-lime-500 border-2 shadow-md rounded-md">
+            <div key={i} className="bg-white p-6 border-[#505e4d] border-2 rounded-md">
               <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-              <p className="text-gray-700 text-sm">{item.desc}</p>
+              <p className="text-[#505e4d]/85 text-sm">{item.desc}</p>
             </div>
           ))}
         </div>
 
         <div className="text-center mt-10">
-          <button className="bg-lime-500 text-white px-6 py-3 rounded hover:bg-green-700" onClick={() => setShowCallbackModal(true)}>
+          <button className="bg-[#505e4d] text-white px-6 py-3 rounded hover:bg-[#445241]" onClick={() => setShowCallbackModal(true)}>
             Contact Sales
           </button>
         </div>
@@ -423,27 +423,27 @@ export default function ReqBulkPurchase() {
 
       {showCallbackModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg relative max-h-[90vh] overflow-y-auto">
-            <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600" onClick={() => setShowCallbackModal(false)}>
+          <div className="bg-white rounded-lg p-6 w-full max-w-lg border border-[#505e4d]/20 relative max-h-[90vh] overflow-y-auto">
+            <button className="absolute top-4 right-4 text-[#505e4d]/60 hover:text-[#505e4d]/75" onClick={() => setShowCallbackModal(false)}>
               <X size={24} />
             </button>
             <div className="flex flex-col gap-6">
               <div className="flex-1 w-full">
                 <h2 className="text-2xl font-bold mb-2">Contact Sales</h2>
-                <p className="text-gray-600 text-sm mb-6">Submit your bulk purchase inquiry and we'll get back to you soon.</p>
+                <p className="text-[#505e4d]/75 text-sm mb-6">Submit your bulk purchase inquiry and we'll get back to you soon.</p>
 
                 {callbackSuccess ? (
-                  <div className="text-green-600 font-medium text-center py-8">
-                    ✓ Request submitted successfully! We'll contact you soon.
+                  <div className="text-[#505e4d] font-medium text-center py-8">
+                    Request submitted successfully! We'll contact you soon.
                   </div>
                 ) : (
                   <form onSubmit={handleCallbackSubmit} className="space-y-4">
 
                     {/* Name Field */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                      <label className="block text-sm font-medium text-[#505e4d] mb-2">Full Name *</label>
                       <div className="flex items-center gap-3">
-                        <div className="text-lime-600">
+                        <div className="text-[#505e4d]">
                           <User size={20} />
                         </div>
                         <input
@@ -451,7 +451,7 @@ export default function ReqBulkPurchase() {
                           name="name"
                           value={callbackForm.name}
                           onChange={handleCallbackChange}
-                          className="flex-1 w-full py-2 px-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-lime-500 focus:border-transparent"
+                          className="flex-1 w-full py-2 px-3 border border-[#505e4d]/30 rounded-md focus:ring-2 focus:ring-[#505e4d]/20 focus:border-[#505e4d] outline-none"
                           required
                           disabled={!!user}
                         />
@@ -460,9 +460,9 @@ export default function ReqBulkPurchase() {
 
                     {/* Email Field with OTP */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                      <label className="block text-sm font-medium text-[#505e4d] mb-2">Email *</label>
                       <div className="flex items-center gap-3">
-                        <div className="text-lime-600">
+                        <div className="text-[#505e4d]">
                           <Mail size={20} />
                         </div>
                         <input
@@ -470,7 +470,7 @@ export default function ReqBulkPurchase() {
                           name="email"
                           value={callbackForm.email}
                           onChange={handleCallbackChange}
-                          className="flex-1 w-full py-2 px-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-lime-500 focus:border-transparent"
+                          className="flex-1 w-full py-2 px-3 border border-[#505e4d]/30 rounded-md focus:ring-2 focus:ring-[#505e4d]/20 focus:border-[#505e4d] outline-none"
                           required
                           disabled={!!user || otpSent}
                         />
@@ -479,20 +479,20 @@ export default function ReqBulkPurchase() {
                             type="button"
                             onClick={handleSendOTP}
                             disabled={otpLoading || !callbackForm.email}
-                            className="px-4 py-2 bg-lime-500 text-white rounded-md hover:bg-lime-600 disabled:bg-gray-300 disabled:cursor-not-allowed whitespace-nowrap text-sm"
+                            className="px-4 py-2 bg-[#505e4d] text-white rounded-md hover:bg-[#445241] disabled:bg-[#505e4d]/40 disabled:cursor-not-allowed whitespace-nowrap text-sm"
                           >
                             {otpLoading ? 'Sending...' : 'Send OTP'}
                           </button>
                         )}
                       </div>
                       {!user && (
-                        <p className="text-xs text-gray-500 mt-1 ml-8">
-                          {otpSent ? '✓ OTP sent to your email' : 'Click "Send OTP" to verify your email'}
+                        <p className="text-xs text-[#505e4d]/70 mt-1 ml-8">
+                          {otpSent ? 'OTP sent to your email' : 'Click "Send OTP" to verify your email'}
                         </p>
                       )}
                       {user && (
-                        <p className="text-xs text-green-600 mt-1 ml-8">
-                          ✓ Verified (logged in user)
+                        <p className="text-xs text-[#505e4d] mt-1 ml-8">
+                          Verified (logged in user)
                         </p>
                       )}
                     </div>
@@ -500,9 +500,9 @@ export default function ReqBulkPurchase() {
                     {/* OTP Field - Only for non-logged-in users */}
                     {!user && otpSent && (
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Enter OTP *</label>
+                        <label className="block text-sm font-medium text-[#505e4d] mb-2">Enter OTP *</label>
                         <div className="flex items-center gap-3">
-                          <div className="text-lime-600">
+                          <div className="text-[#505e4d]">
                             <Mail size={20} />
                           </div>
                           <input
@@ -511,11 +511,11 @@ export default function ReqBulkPurchase() {
                             onChange={(e) => setOtp(e.target.value)}
                             placeholder="Enter 6-digit OTP"
                             maxLength={6}
-                            className="flex-1 w-full py-2 px-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-lime-500 focus:border-transparent"
+                            className="flex-1 w-full py-2 px-3 border border-[#505e4d]/30 rounded-md focus:ring-2 focus:ring-[#505e4d]/20 focus:border-[#505e4d] outline-none"
                             required
                           />
                         </div>
-                        <p className="text-xs text-gray-500 mt-1 ml-8">
+                        <p className="text-xs text-[#505e4d]/70 mt-1 ml-8">
                           Enter the 6-digit code sent to your email
                         </p>
                       </div>
@@ -523,9 +523,9 @@ export default function ReqBulkPurchase() {
 
                     {/* Phone Number with Country Code */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                      <label className="block text-sm font-medium text-[#505e4d] mb-2">Phone Number</label>
                       <div className="flex items-center gap-3">
-                        <div className="text-lime-600">
+                        <div className="text-[#505e4d]">
                           <Phone size={24} />
                         </div>
                         <PhoneInput
@@ -542,9 +542,9 @@ export default function ReqBulkPurchase() {
 
                     {/* Company Field */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Company Name *</label>
+                      <label className="block text-sm font-medium text-[#505e4d] mb-2">Company Name *</label>
                       <div className="flex items-center gap-3">
-                        <div className="text-lime-600">
+                        <div className="text-[#505e4d]">
                           <Building2 size={20} />
                         </div>
                         <input
@@ -552,7 +552,7 @@ export default function ReqBulkPurchase() {
                           name="company"
                           value={callbackForm.company}
                           onChange={handleCallbackChange}
-                          className="flex-1 w-full py-2 px-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-lime-500 focus:border-transparent"
+                          className="flex-1 w-full py-2 px-3 border border-[#505e4d]/30 rounded-md focus:ring-2 focus:ring-[#505e4d]/20 focus:border-[#505e4d] outline-none"
                           required
                         />
                       </div>
@@ -560,11 +560,11 @@ export default function ReqBulkPurchase() {
 
                     {/* Note Field */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Additional Notes <span className="text-gray-400 text-xs">(Optional)</span>
+                      <label className="block text-sm font-medium text-[#505e4d] mb-2">
+                        Additional Notes <span className="text-[#505e4d]/60 text-xs">(Optional)</span>
                       </label>
                       <div className="flex items-start gap-3">
-                        <div className="text-lime-600 mt-2">
+                        <div className="text-[#505e4d] mt-2">
                           <FileText size={20} />
                         </div>
                         <textarea
@@ -573,17 +573,17 @@ export default function ReqBulkPurchase() {
                           onChange={handleCallbackChange}
                           rows={3}
                           placeholder="Tell us about your bulk purchase requirements, quantity needed, or any special requests..."
-                          className="flex-1 w-full py-2 px-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-lime-500 focus:border-transparent resize-none"
+                          className="flex-1 w-full py-2 px-3 border border-[#505e4d]/30 rounded-md focus:ring-2 focus:ring-[#505e4d]/20 focus:border-[#505e4d] outline-none resize-none"
                         />
                       </div>
-                      <p className="text-xs text-gray-500 mt-1 ml-8">
+                      <p className="text-xs text-[#505e4d]/70 mt-1 ml-8">
                         Share any additional details about your bulk purchase needs
                       </p>
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full bg-lime-500 text-white py-3 rounded-md font-medium hover:bg-lime-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                      className="w-full bg-[#505e4d] text-white py-3 rounded-md font-medium hover:bg-[#445241] disabled:bg-[#505e4d]/40 disabled:cursor-not-allowed transition-colors"
                       disabled={callbackLoading || (!user && !otpSent)}
                     >
                       {callbackLoading ? 'Submitting...' : 'Submit Request'}
@@ -599,3 +599,4 @@ export default function ReqBulkPurchase() {
     </div>
   );
 }
+
