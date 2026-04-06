@@ -1140,6 +1140,13 @@ const Navbar = () => {
                     >
                       My Orders
                     </Link>
+                    <Link
+                      to={getLocalizedPath("/track-order")}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsProfileOpen(false)}
+                    >
+                      Track Order
+                    </Link>
                     <hr className="my-1" />
                     <button
                       onClick={handleLogout}
@@ -1352,6 +1359,14 @@ const Navbar = () => {
                 >
                   <HelpCircle size={20} className="mr-3" />
                   <strong><TranslatedText>Help Center</TranslatedText></strong>
+                </Link>
+                <Link
+                  to={getLocalizedPath("/track-order")}
+                  className="flex items-center py-3 text-gray-700 bg-gray-50 hover:bg-gray-50 rounded-lg px-2"
+                  onClick={closeMobileMenu}
+                >
+                  <Search size={20} className="mr-3" />
+                  <strong><TranslatedText>Track Order</TranslatedText></strong>
                 </Link>
                 <a
                   href="https://crownexcel.ae"

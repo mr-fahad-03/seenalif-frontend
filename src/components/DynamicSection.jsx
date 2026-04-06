@@ -239,22 +239,22 @@ function ArrowSliderSection({ section, cards, settings, currentIndex, setCurrent
             onClick={handlePrev}
             disabled={!canGoPrev}
             className={`border-2 rounded-lg p-2 md:p-3 transition-all group cursor-pointer 
-              ${canGoPrev ? 'bg-white border-lime-500 hover:bg-lime-500 hover:border-lime-500' : 'bg-gray-100 border-gray-300 cursor-not-allowed'}`}
+              ${canGoPrev ? 'bg-white border-[#505e4d] hover:bg-[#505e4d] hover:border-[#505e4d]' : 'bg-gray-100 border-gray-300 cursor-not-allowed'}`}
           >
             <ChevronLeft 
               className={`w-4 h-4 md:w-6 md:h-6 transition-colors 
-                ${canGoPrev ? 'text-lime-500 group-hover:text-white' : 'text-gray-400'}`}
+                ${canGoPrev ? 'text-[#505e4d] group-hover:text-white' : 'text-gray-400'}`}
             />
           </button>
           <button
             onClick={handleNext}
             disabled={!canGoNext}
             className={`border-2 rounded-lg p-2 md:p-3 transition-all group cursor-pointer 
-              ${canGoNext ? 'bg-white border-lime-500 hover:bg-lime-500 hover:border-lime-500' : 'bg-gray-100 border-gray-300 cursor-not-allowed'}`}
+              ${canGoNext ? 'bg-white border-[#505e4d] hover:bg-[#505e4d] hover:border-[#505e4d]' : 'bg-gray-100 border-gray-300 cursor-not-allowed'}`}
           >
             <ChevronRight 
               className={`w-4 h-4 md:w-6 md:h-6 transition-colors 
-                ${canGoNext ? 'text-lime-500 group-hover:text-white' : 'text-gray-400'}`}
+                ${canGoNext ? 'text-[#505e4d] group-hover:text-white' : 'text-gray-400'}`}
             />
           </button>
         </div>

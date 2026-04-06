@@ -181,6 +181,14 @@ const Profile = () => {
                 <Package size={20} className="text-slate-600 group-hover:text-[#505e4d]" />
                 <span className="text-slate-700 group-hover:text-[#505e4d] font-medium">My Orders</span>
               </button>
+
+              <button
+                onClick={() => navigate(getLocalizedPath("/track-order"))}
+                className="w-full flex items-center space-x-3 px-4 py-3 bg-[#f4f6f3] hover:bg-[#edf1eb] hover:border-[#c7cec2] border border-transparent rounded-lg transition-all group"
+              >
+                <Package size={20} className="text-slate-600 group-hover:text-[#505e4d]" />
+                <span className="text-slate-700 group-hover:text-[#505e4d] font-medium">Track Order</span>
+              </button>
               
               <button
                 onClick={() => navigate("/wishlist")}

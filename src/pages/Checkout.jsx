@@ -108,7 +108,7 @@ const PAYMENT_METHODS = [
     id: "cod",
     name: "",
     description: "",
-    iconUrls: [{ src: "https://res.cloudinary.com/dyfhsu5v6/image/upload/v1757764221/cash_qk1cws.webp", size: "big" }],
+    iconUrls: [{ src: "/card (1).webp", size: "big" }],
     color: "", // Remove background color
   },
 ]
@@ -1684,11 +1684,6 @@ const Checkout = () => {
                     >
                       {loading ? (
                         <>
-                          <img
-                            src="/g.png"
-                            alt="Loading..."
-                            style={{ width: 24, height: 24, animation: "bounce 1s infinite" }}
-                          />
                           <TranslatedText>Processing...</TranslatedText>
                         </>
                       ) : (

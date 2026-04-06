@@ -99,7 +99,7 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState(0)
   const [selectedColorIndex, setSelectedColorIndex] = useState(null)
   const [selectedDosIndex, setSelectedDosIndex] = useState(null)
-  const [activeTab, setActiveTab] = useState("description")
+  const [activeTab, setActiveTab] = useState("keyFeatures")
   const [showImageModal, setShowImageModal] = useState(false)
   const [modalImageIndex, setModalImageIndex] = useState(0)
   const [isImageZoomed, setIsImageZoomed] = useState(false)
@@ -110,6 +110,10 @@ const ProductDetails = () => {
   const [showRatingDropdown, setShowRatingDropdown] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const ratingDropdownRef = useRef(null)
+  const descriptionSectionRef = useRef(null)
+  const keyFeaturesSectionRef = useRef(null)
+  const informationSectionRef = useRef(null)
+  const reviewsSectionRef = useRef(null)
 
   const [reviewStats, setReviewStats] = useState({
     averageRating: 0,
@@ -129,6 +133,7 @@ const ProductDetails = () => {
   // Buyer Protection state
   const [selectedProtections, setSelectedProtections] = useState([])
   const [hasProtectionPlans, setHasProtectionPlans] = useState(false)
+  const screenshotLayoutMode = true
 
   // Keyboard navigation
   useEffect(() => {
@@ -211,6 +216,17 @@ const ProductDetails = () => {
   const [loadingCoupons, setLoadingCoupons] = useState(false)
   const [couponError, setCouponError] = useState(null)
   const [couponCopied, setCouponCopied] = useState(null)
+
+  const scrollToDetailSection = (section) => {
+    setActiveTab(section)
+    const refs = {
+      description: descriptionSectionRef,
+      keyFeatures: keyFeaturesSectionRef,
+      information: informationSectionRef,
+      reviews: reviewsSectionRef,
+    }
+    refs[section]?.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
 
   const formatPrice = (price) => {
     const num = Number(price)
@@ -2269,7 +2285,7 @@ const ProductDetails = () => {
 
   // Helper function to get stock badge
   const getStockBadge = () => {
-    const baseClass = "inline-flex items-center text-xs font-semibold uppercase tracking-wide text-[#505e4d]";
+    const baseClass = "inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold uppercase tracking-wide";
     
     // Use the stockStatusAr if available, otherwise fallback to TranslatedText dictionary
     const StockLabel = (
@@ -2285,15 +2301,15 @@ const ProductDetails = () => {
     switch (product.stockStatus) {
       case "In Stock":
         return (
-          <span className={baseClass}>{StockLabel}</span>
+          <span className={`${baseClass} bg-[#e7f7ee] text-[#1f7a45]`}>{StockLabel}</span>
         );
       case "Out of Stock":
         return (
-          <span className={baseClass + " opacity-80"}>{StockLabel}</span>
+          <span className={`${baseClass} bg-[#fdecec] text-[#b42318]`}>{StockLabel}</span>
         );
       case "PreOrder":
         return (
-          <span className={baseClass + " opacity-90"}>{StockLabel}</span>
+          <span className={`${baseClass} bg-[#fff6e5] text-[#b54708]`}>{StockLabel}</span>
         );
       default:
         return null;
@@ -2306,7 +2322,7 @@ const ProductDetails = () => {
     const offerPrice = Number(product.offerPrice) || 0;
     const hasValidOffer = offerPrice > 0 && basePrice > 0 && offerPrice < basePrice;
     // Unified badge style for discount
-    const badgeClass = "inline-flex items-center text-xs font-semibold uppercase tracking-wide text-[#505e4d]";
+    const badgeClass = "inline-flex items-center rounded-full bg-[#b42318] px-3 py-1 text-sm font-bold tracking-wide text-white";
     if (hasValidOffer) {
       const discountPercentage = Math.round(((basePrice - offerPrice) / basePrice) * 100);
       return (
@@ -2340,7 +2356,7 @@ const ProductDetails = () => {
       />
       <div className="mx-auto max-w-[1600px] px-4 py-6 md:py-8">
         {/* Breadcrumb */}
-        <nav className="mb-8 flex items-center space-x-2 overflow-x-auto rounded-xl border border-[#d7ddd4] bg-white px-3 py-3 text-sm text-slate-600 shadow-[0_6px_20px_rgba(80,94,77,0.08)]">
+        {!screenshotLayoutMode && <nav className="mb-8 flex items-center space-x-2 overflow-x-auto rounded-xl border border-[#d7ddd4] bg-white px-3 py-3 text-sm text-slate-600 shadow-[0_6px_20px_rgba(80,94,77,0.08)]">
           <Link to={getLocalizedPath("/")} className="whitespace-nowrap transition-colors hover:text-[#505e4d]">
             <TranslatedText>Home</TranslatedText>
           </Link>
@@ -2418,15 +2434,15 @@ const ProductDetails = () => {
           <span className="block max-w-[120px] truncate whitespace-nowrap font-semibold text-slate-900 sm:max-w-none">
             <TranslatedText text={product.name} sourceDoc={product} fieldName="name" />
           </span>
-        </nav>
+        </nav>}
 
         {/* Product Images and Info Grid */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 xl:gap-7">
           {/* Product Images - Left Side */}
           <div className="lg:col-span-4">
-            <div className="rounded-2xl border border-[#d7ddd4] bg-white p-4 shadow-[0_8px_26px_rgba(80,94,77,0.08)] md:p-5">
+            <div className="rounded-2xl bg-white p-4 md:p-5">
               {/* Main Image/Video */}
-              <div className="group relative mb-4 overflow-hidden rounded-2xl border border-[#d7ddd4] bg-[#f2f4f1] p-4">
+              <div className="group relative mb-4 overflow-hidden rounded-2xl bg-white">
                 {productImages[selectedImage]?.type === 'video' ? (
                   isYouTubeUrl(productImages[selectedImage]?.url) ? (
                     <iframe
@@ -2594,11 +2610,11 @@ const ProductDetails = () => {
 
 
 
-            {/* Product Video Section - Only show if product has video */}
-              {product?.video && (
+            {/* Product Video Section */}
+              {(product?.video || screenshotLayoutMode) && (
                 <div 
                   className="mt-8 cursor-pointer group rounded-2xl border border-[#d7ddd4] bg-white p-3"
-                  onClick={() => setShowVideoModal(true)}
+                  onClick={() => product?.video && setShowVideoModal(true)}
                 >
                   <div className="flex items-center justify-between border-b border-[#d7ddd4] px-0 pb-2">
                     <h4 className="font-bold text-gray-900 text-sm flex items-center gap-2">
@@ -2607,10 +2623,12 @@ const ProductDetails = () => {
                       </svg>
                       Product Video
                     </h4>
-                    <span className="text-xs text-gray-500 group-hover:text-[#505e4d]">Click to expand</span>
+                    <span className="text-xs text-gray-500 group-hover:text-[#505e4d]">
+                      {product?.video ? "Click to expand" : "No video available"}
+                    </span>
                   </div>
                   <div className="relative w-full aspect-video overflow-hidden rounded-xl bg-black">
-                    {isYouTubeUrl(product.video) ? (
+                    {product?.video ? isYouTubeUrl(product.video) ? (
                       <iframe
                         src={`${getYouTubeEmbedUrl(product.video)}?autoplay=1&mute=1`}
                         title="Product Video"
@@ -2630,6 +2648,10 @@ const ProductDetails = () => {
                       >
                         Your browser does not support the video tag.
                       </video>
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-sm font-medium text-white/80">
+                        <TranslatedText>No product video available</TranslatedText>
+                      </div>
                     )}
                     {/* Overlay for click */}
                     <div className="absolute inset-0 bg-transparent group-hover:bg-black group-hover:bg-opacity-20 transition-all flex items-center justify-center">
@@ -2651,8 +2673,8 @@ const ProductDetails = () => {
           
 
           {/* Product Info - Middle */}
-          <div className="lg:col-span-5">
-            <div className="rounded-2xl border border-[#d7ddd4] bg-white p-4 shadow-[0_8px_26px_rgba(80,94,77,0.08)] md:p-6">
+          <div className="lg:col-span-8">
+            <div className="rounded-2xl border border-[#d7ddd4] bg-white p-4 md:p-6">
               {/* Status Badges */}
               <div className="flex items-center gap-2 mb-4">
                 <div className="flex items-center gap-2">
@@ -2665,7 +2687,7 @@ const ProductDetails = () => {
               </h1>
 
               {/* Brand and Category */}
-              <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm text-slate-600">
+              <div className="mb-4 flex flex-wrap items-center gap-x-6 gap-y-1 text-base text-slate-600">
                 <span>
                   <TranslatedText>Brand</TranslatedText>:{" "}
                   <span className="font-semibold text-[#505e4d]">
@@ -2754,7 +2776,7 @@ const ProductDetails = () => {
               </div>
 
               {/* Price */}
-              <div className="mb-6">
+              <div className="mb-3">
                 {(() => {
                   const currentColor = getCurrentColor()
                   let basePrice = 0
@@ -2771,18 +2793,41 @@ const ProductDetails = () => {
                   const hasValidOffer = offerPrice > 0 && basePrice > 0 && offerPrice < basePrice
                   const priceToShow = getEffectivePrice()
                   const discount = hasValidOffer ? Math.round(((basePrice - offerPrice) / basePrice) * 100) : 0
+                  const stockLabel =
+                    product.stockStatus === "In Stock" ? (
+                      <TranslatedText sourceDoc={product} fieldName="stockStatus">Available in stock</TranslatedText>
+                    ) : product.stockStatus === "Out of Stock" ? (
+                      <TranslatedText sourceDoc={product} fieldName="stockStatus">Currently out of stock</TranslatedText>
+                    ) : product.stockStatus === "PreOrder" ? (
+                      <TranslatedText sourceDoc={product} fieldName="stockStatus">Available for pre-order</TranslatedText>
+                    ) : (
+                      <TranslatedText sourceDoc={product} fieldName="stockStatus">Stock status updates at checkout</TranslatedText>
+                    )
+                  const stockBadgeClass =
+                    product.stockStatus === "In Stock"
+                      ? "bg-[#e7f7ee] text-[#1f7a45]"
+                      : product.stockStatus === "Out of Stock"
+                        ? "bg-[#fdecec] text-[#b42318]"
+                        : product.stockStatus === "PreOrder"
+                          ? "bg-[#fff6e5] text-[#b54708]"
+                          : "bg-[#eef2f6] text-[#475467]"
 
                   return (
                     <>
-                      <div className="flex items-center space-x-3 mb-2">
-                        <div className="text-3xl font-bold text-slate-900">{formatPrice(priceToShow)}</div>
-                        {hasValidOffer && (
-                          <div className="text-lg font-medium text-slate-400 line-through">{formatPrice(basePrice)}</div>
-                        )}
+                      <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="text-3xl font-bold text-slate-900">{formatPrice(priceToShow)}</div>
+                          {hasValidOffer && (
+                            <div className="text-lg font-medium text-slate-400 line-through">{formatPrice(basePrice)}</div>
+                          )}
+                        </div>
+                        <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-base font-semibold ${stockBadgeClass}`}>
+                          {stockLabel}
+                        </span>
                       </div>
-                      <div className="text-sm text-slate-600"><TranslatedText>Including VAT</TranslatedText></div>
+                      <div className="text-base font-medium text-slate-600"><TranslatedText>Including VAT</TranslatedText></div>
                       {hasValidOffer && (
-                        <div className="text-base font-semibold text-[#505e4d]">
+                        <div className="text-lg font-semibold text-[#505e4d]">
                           <TranslatedText>You Save</TranslatedText> {formatPrice(basePrice - priceToShow)}
                           {discount > 0 && ` (${discount}%)`}
                         </div>
@@ -2792,32 +2837,10 @@ const ProductDetails = () => {
                 })()}
               </div>
 
-              {/* Stock Status */}
-              <div className="mb-6">
-                {(() => {
-                  const stockText =
-                    product.stockStatus === "In Stock"
-                      ? <TranslatedText sourceDoc={product} fieldName="stockStatus">Available in stock</TranslatedText>
-                      : product.stockStatus === "Out of Stock"
-                        ? <TranslatedText sourceDoc={product} fieldName="stockStatus">Currently out of stock</TranslatedText>
-                        : product.stockStatus === "PreOrder"
-                          ? <TranslatedText sourceDoc={product} fieldName="stockStatus">Available for pre-order</TranslatedText>
-                          : <TranslatedText sourceDoc={product} fieldName="stockStatus">Stock status updates at checkout</TranslatedText>
-
-                  return (
-                    <div
-                      className="text-sm font-medium text-[#505e4d]"
-                    >
-                      {stockText}
-                    </div>
-                  )
-                })()}
-              </div>
-
           
 
               {/* Color Variations */}
-              {product.colorVariations && product.colorVariations.length > 0 && (
+              {!screenshotLayoutMode && product.colorVariations && product.colorVariations.length > 0 && (
                 <div className="mb-6">
                   <h3 className="mb-3 flex items-center font-bold text-slate-900">
                     <span className="mr-2 text-[#505e4d]"></span>
@@ -2892,7 +2915,7 @@ const ProductDetails = () => {
               )}
 
               {/* DOS/Windows Variations */}
-              {product.dosVariations && product.dosVariations.length > 0 && (
+              {!screenshotLayoutMode && product.dosVariations && product.dosVariations.length > 0 && (
                 <div className="mb-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center">
                     <span className="text-[#505e4d] mr-2">OS</span>
@@ -2961,7 +2984,7 @@ const ProductDetails = () => {
               )}
 
               {/* Product Variations */}
-              {product.variations && product.variations.length > 0 && (
+              {!screenshotLayoutMode && product.variations && product.variations.length > 0 && (
                 <div className="mb-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center">
                     <span className="text-[#505e4d] mr-2"></span>
@@ -3056,7 +3079,7 @@ const ProductDetails = () => {
 
 
                   {/* Key Features */}
-              {keyFeaturesContent && (
+              {!screenshotLayoutMode && keyFeaturesContent && (
                 <div className="mb-6">
                   <h3 className="font-bold text-gray-900 mb-3"><TranslatedText>Key Features</TranslatedText>:</h3>
                   <div className="prose prose-sm md:prose-base max-w-none text-gray-700 leading-relaxed">
@@ -3122,22 +3145,22 @@ const ProductDetails = () => {
               {/* </div> */}
 
               {/* Quantity and Add to Cart */}
-              <div className="space-y-4 mb-6">
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-[auto_1fr_auto_1fr] sm:items-stretch">
-                  <div className="flex items-center rounded-md border border-[#c9d1c4]">
+              <div className="mb-1 space-y-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-stretch">
+                  <div className="grid w-full grid-cols-3 overflow-hidden rounded-md border border-[#c9d1c4]">
                     <button
                       onClick={() => handleQuantityChange(-1)}
-                      className="px-3 py-2 text-slate-600 transition-colors hover:text-[#505e4d]"
+                      className="flex items-center justify-center py-2 text-slate-600 transition-colors hover:text-[#505e4d]"
                       disabled={quantity <= 1}
                     >
                       <Minus size={16} />
                     </button>
-                    <span className="min-w-[60px] border-x border-[#c9d1c4] px-4 py-2 text-center font-semibold text-slate-800">
+                    <span className="flex items-center justify-center border-x border-[#c9d1c4] py-2 text-center font-semibold text-slate-800">
                       {quantity}
                     </span>
                     <button
                       onClick={() => handleQuantityChange(1)}
-                      className="px-3 py-2 text-slate-600 transition-colors hover:text-[#505e4d]"
+                      className="flex items-center justify-center py-2 text-slate-600 transition-colors hover:text-[#505e4d]"
                       disabled={quantity >= (product.maxPurchaseQty || 10)}
                     >
                       <Plus size={16} />
@@ -3147,7 +3170,7 @@ const ProductDetails = () => {
                   <button
                     onClick={handleAddToCart}
                     disabled={product.stockStatus === "Out of Stock"}
-                    className="inline-flex h-full items-center justify-center rounded-lg bg-[#505e4d] px-5 py-3 font-semibold text-white whitespace-nowrap transition-colors hover:bg-[#465342] disabled:bg-slate-400"
+                    className="inline-flex h-full w-full items-center justify-center rounded-lg bg-[#0f4c81] px-5 py-3 font-semibold text-white whitespace-nowrap transition-colors hover:bg-[#0c3e6a] disabled:bg-slate-400"
                   >
                     <ShoppingCart size={18} className="mr-2" />
                     <TranslatedText>Add to Cart</TranslatedText>
@@ -3160,20 +3183,20 @@ const ProductDetails = () => {
                     }
                     className={`inline-flex h-full items-center justify-center rounded-lg border px-4 py-3 transition-colors ${
                       isInWishlist(product._id)
-                        ? "border-[#505e4d] bg-[#505e4d] hover:bg-[#465342]"
-                        : "border-[#c9d1c4] hover:border-[#505e4d] hover:bg-[#f1f4f0]"
+                        ? "border-[#b42318] bg-[#b42318] hover:bg-[#912018]"
+                        : "border-[#f3c7c2] bg-[#fff1ef] hover:border-[#b42318] hover:bg-[#ffe4e1]"
                     }`}
                     aria-label={isInWishlist(product._id) ? "Remove from wishlist" : "Add to wishlist"}
                   >
                     <Heart
                       size={20}
-                        className={isInWishlist(product._id) ? "fill-white text-white" : "fill-transparent text-[#505e4d]"}
+                        className={isInWishlist(product._id) ? "fill-white text-white" : "fill-transparent text-[#b42318]"}
                     />
                   </button>
 
                   <button
                     disabled={product.stockStatus === "Out of Stock"}
-                    className="hidden h-full w-full rounded-lg bg-[#3f4a3b] px-4 py-3 font-medium text-white transition-colors hover:bg-[#313b2d] disabled:bg-gray-400 sm:block whitespace-nowrap"
+                    className="hidden h-full w-full rounded-lg bg-[#7a2e0e] px-4 py-3 font-medium text-white transition-colors hover:bg-[#5e230a] disabled:bg-gray-400 sm:block whitespace-nowrap"
                     onClick={handleBuyNow}
                   >
                     <TranslatedText>Buy Now</TranslatedText>
@@ -3182,18 +3205,19 @@ const ProductDetails = () => {
 
                 <button
                   disabled={product.stockStatus === "Out of Stock"}
-                  className="ml-1 w-full rounded-lg bg-[#3f4a3b] px-3 py-3 font-medium text-white transition-colors hover:bg-[#313b2d] disabled:bg-gray-400 md:hidden lg:hidden"
+                  className="ml-1 w-full rounded-lg bg-[#7a2e0e] px-3 py-3 font-medium text-white transition-colors hover:bg-[#5e230a] disabled:bg-gray-400 md:hidden lg:hidden"
                   onClick={handleBuyNow}
                 >
                   <TranslatedText>Buy Now</TranslatedText>
                 </button>
+
               </div>
 
-              <div className="grid grid-cols-3 gap-4 py-4 text-center">
+              {!screenshotLayoutMode && <div className="grid grid-cols-3 gap-4 py-4 text-center">
                 {/* WhatsApp Chat */}
                 <div className="group rounded-md p-2 transition-colors hover:bg-[#f1f4f0]">
                   <button
-                    className="flex w-full flex-col items-center text-slate-600 hover:text-[#505e4d]"
+                    className="flex w-full flex-col items-center rounded-md border border-[#7b8873] bg-[#7b8873] p-2 text-white transition-colors hover:border-[#667561] hover:bg-[#667561]"
                     onClick={() =>
                       window.open(
                         `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20need%20help%20with%20this%20product%3A%20${encodeURIComponent(product.name)}`,
@@ -3201,8 +3225,8 @@ const ProductDetails = () => {
                       )
                     }
                   >
-                    <MessageCircle size={24} className="mb-2 text-[#505e4d]" />
-                    <span className="text-xs font-medium text-slate-900 group-hover:text-[#505e4d]">
+                    <MessageCircle size={24} className="mb-2 text-white" />
+                    <span className="text-xs font-medium text-white">
                       <TranslatedText>Chat With Specialist</TranslatedText>
                     </span>
                   </button>
@@ -3211,11 +3235,11 @@ const ProductDetails = () => {
                 {/* Callback Request */}
                 <div className="group rounded-md p-2 transition-colors hover:bg-[#f1f4f0]">
                   <button
-                    className="flex w-full flex-col items-center text-slate-600 hover:text-[#505e4d]"
+                    className="flex w-full flex-col items-center rounded-md border border-[#7b8873] bg-[#7b8873] p-2 text-white transition-colors hover:border-[#667561] hover:bg-[#667561]"
                     onClick={() => setShowCallbackModal(true)}
                   >
-                    <Phone size={24} className="mb-2 text-[#505e4d]" />
-                    <span className="text-xs font-medium text-slate-900 group-hover:text-[#505e4d]"><TranslatedText>Request a Callback</TranslatedText></span>
+                    <Phone size={24} className="mb-2 text-white" />
+                    <span className="text-xs font-medium text-white"><TranslatedText>Request a Callback</TranslatedText></span>
                   </button>
                 </div>
 
@@ -3232,68 +3256,133 @@ const ProductDetails = () => {
                     </span>
                   </button>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Service Features - Right Side */}
-          <div className="lg:col-span-3">
-            <div className="space-y-5 rounded-2xl border border-[#d7ddd4] bg-white p-4 shadow-[0_8px_26px_rgba(80,94,77,0.08)] md:p-5">
-              {/* Get My Coupon */}
-              <div className="border-l-2 border-[#505e4d] pl-4">
-                <h4 className="mb-2 flex items-center gap-2 text-md font-bold text-gray-900">
-                  <Percent size={16} className="text-[#505e4d]" />
-                  <TranslatedText>Get My Coupon</TranslatedText>
-                </h4>
-                <p className="text-sm text-gray-700 mb-3">
+              </div>}
+               <div className="-mt-4 lg:col-span-8 lg:col-start-5">
+            <div className="space-y-4 rounded-2xl bg-white px-2 pt-4 pb-1 md:px-3 md:pt-4 md:pb-1">
+              <div className="rounded-xl px-1 py-2">
+                <p className="mb-2 px-1 text-center text-xs font-medium leading-5 text-slate-700 sm:text-sm md:text-base">
                   <TranslatedText>Free shipping when you spend AED500 & above. Unlimited destinations in Dubai and Abu Dhabi</TranslatedText>
                 </p>
+                <h4 className="mb-3 text-center text-xl font-bold text-slate-900">
+                  <TranslatedText>Available coupons</TranslatedText>
+                </h4>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                  <button
+                    className="rounded-md bg-[#505e4d] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#465342]"
+                    onClick={handleOpenCouponsModal}
+                  >
+                    <TranslatedText>Get Coupons</TranslatedText>
+                  </button>
+                  <button
+                    className="inline-flex items-center justify-center rounded-md border border-[#7b8873] bg-[#7b8873] px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-[#667561] hover:bg-[#667561]"
+                    onClick={() =>
+                      window.open(
+                        `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20need%20help%20with%20this%20product%3A%20${encodeURIComponent(product.name)}`,
+                        "_blank",
+                      )
+                    }
+                  >
+                    <MessageCircle size={16} className="mr-2 text-white" />
+                    <TranslatedText>Chat With Specialist</TranslatedText>
+                  </button>
+                  <button
+                    className="inline-flex items-center justify-center rounded-md border border-[#7b8873] bg-[#7b8873] px-3 py-2 text-sm font-semibold text-white transition-colors hover:border-[#667561] hover:bg-[#667561]"
+                    onClick={() => setShowCallbackModal(true)}
+                  >
+                    <Phone size={16} className="mr-2 text-white" />
+                    <TranslatedText>Request a Callback</TranslatedText>
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 <button
-                  className="w-full rounded-md bg-[#505e4d] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#465342]"
-                  onClick={handleOpenCouponsModal}
+                  type="button"
+                  onClick={() => setShowTamaraModal(true)}
+                  className="rounded-xl border border-[#d7ddd4] p-4 text-left transition-colors hover:bg-[#f8faf7]"
                 >
-                  <TranslatedText>Get Coupons</TranslatedText>
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-sm leading-relaxed text-slate-700">
+                      <TranslatedText>Or split in 4 payments of</TranslatedText>{" "}
+                      <span className="font-bold text-slate-900">{formatPerMonth(getEffectivePrice() / 4)}</span>
+                      <br />
+                      <span className="underline"><TranslatedText>No late fees. More options</TranslatedText></span>
+                    </p>
+                    <img
+                      src="/tamara.png"
+                      alt="Tamara"
+                      className="h-8 w-auto shrink-0 object-contain"
+                    />
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowTabbyModal(true)}
+                  className="rounded-xl border border-[#d7ddd4] p-4 text-left transition-colors hover:bg-[#f8faf7]"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="text-sm leading-relaxed text-slate-700">
+                      <TranslatedText>As low as</TranslatedText>{" "}
+                      <span className="font-bold text-slate-900">{formatPerMonth(getEffectivePrice() / 12)}</span>
+                      <br />
+                      <TranslatedText>or 4 interest-free payments.</TranslatedText>{" "}
+                      <span className="underline"><TranslatedText>Learn more</TranslatedText></span>
+                    </p>
+                    <span className="inline-flex shrink-0 items-center rounded-lg bg-[#3bffa0] px-3 py-1">
+                      <img
+                        src="https://res.cloudinary.com/dyfhsu5v6/image/upload/v1759294149/tabby-logo-1_oqkdwm.png"
+                        alt="Tabby"
+                        className="h-6 w-auto object-contain"
+                      />
+                    </span>
+                  </div>
                 </button>
               </div>
 
               {/* Delivery Info */}
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                 <div 
-                  className="flex cursor-pointer items-start space-x-3 border-b border-[#e2e7df] pb-3 transition-colors hover:text-[#505e4d]"
+                  className="cursor-pointer rounded-lg border border-[#d7ddd4] p-3 transition-colors hover:bg-[#f8faf7]"
                   onClick={() => navigate(getLocalizedPath('/delivery-terms'))}
                 >
-                  <Truck className="mt-1 text-[#505e4d]" size={42} />
-                  <div>
-                    <h4 className="font-bold text-gray-900 text-sm"><TranslatedText>Express Delivery</TranslatedText></h4>
-                    <p className="text-xs text-gray-700">
-                      <TranslatedText>Free shipping when you spend AED500 & above. Unlimited destinations in Dubai and Abu Dhabi</TranslatedText>
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <Truck className="mt-0.5 shrink-0 text-[#505e4d]" size={20} />
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm"><TranslatedText>Express Delivery</TranslatedText></h4>
+                      <p className="text-xs text-gray-700">
+                        <TranslatedText>Free shipping when you spend AED500 & above. Unlimited destinations in Dubai and Abu Dhabi</TranslatedText>
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 <div 
-                  className="flex cursor-pointer items-start space-x-3 border-b border-[#e2e7df] pb-3 transition-colors hover:text-[#505e4d]"
+                  className="cursor-pointer rounded-lg border border-[#d7ddd4] p-3 transition-colors hover:bg-[#f8faf7]"
                   onClick={() => navigate(getLocalizedPath('/refund-return'))}
                 >
-                  <RotateCcw className="mt-1 text-[#505e4d]" size={42} />
-                  <div>
-                    <h4 className="font-bold text-gray-900 text-sm"><TranslatedText>Delivery & Returns Policy</TranslatedText></h4>
-                    <p className="text-xs text-gray-700">
-                      <TranslatedText>Delivery in remote areas will be considered as normal delivery which takes place with 1 working day delivery.</TranslatedText>
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <RotateCcw className="mt-0.5 shrink-0 text-[#505e4d]" size={20} />
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm"><TranslatedText>Delivery & Returns Policy</TranslatedText></h4>
+                      <p className="text-xs text-gray-700">
+                        <TranslatedText>Delivery in remote areas will be considered as normal delivery which takes place with 1 working day delivery.</TranslatedText>
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 <div 
-                  className="flex cursor-pointer items-start space-x-3 pb-1 transition-colors hover:text-[#505e4d]"
+                  className="cursor-pointer rounded-lg border border-[#d7ddd4] p-3 transition-colors hover:bg-[#f8faf7]"
                   onClick={() => navigate(getLocalizedPath('/terms-conditions'))}
                 >
-                  <Award className="mt-1 text-[#505e4d]" size={30} />
-                  <div>
-                    <h4 className="font-bold text-gray-900 text-sm"><TranslatedText>Warranty Information</TranslatedText></h4>
-                    <p className="text-xs text-gray-700">
-                      <TranslatedText text={product.warranty || "Standard warranty applies as per manufacturer terms"}>{product.warranty || "Standard warranty applies as per manufacturer terms"}</TranslatedText>
-                    </p>
+                  <div className="flex items-start gap-3">
+                    <Award className="mt-0.5 shrink-0 text-[#505e4d]" size={20} />
+                    <div>
+                      <h4 className="font-bold text-gray-900 text-sm"><TranslatedText>Warranty Information</TranslatedText></h4>
+                      <p className="text-xs text-gray-700">
+                        <TranslatedText text={product.warranty || "Standard warranty applies as per manufacturer terms"}>{product.warranty || "Standard warranty applies as per manufacturer terms"}</TranslatedText>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3303,7 +3392,7 @@ const ProductDetails = () => {
 
 
 {/* Protect Your Purchase - Only show if protection plans are available */}
-{hasProtectionPlans && (
+{!screenshotLayoutMode && hasProtectionPlans && (
 <div className="mt-8 border-t border-[#d7ddd4] pt-5">
             <div className="p-1">
               <h3 className="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
@@ -3321,7 +3410,7 @@ const ProductDetails = () => {
 )}
 
 {/* Hidden loader to check for protection plans availability */}
-{!hasProtectionPlans && (
+{!screenshotLayoutMode && !hasProtectionPlans && (
   <BuyerProtectionSection
     productId={product._id}
     productPrice={product.salePrice || product.price}
@@ -3371,32 +3460,18 @@ const ProductDetails = () => {
 
 
               {/* Payment Methods */}
-              <div className="border-t border-[#d7ddd4] pt-4">
-                <h4 className="mb-3 text-md font-semibold text-[#505e4d]">
-                  <TranslatedText>Payment Methods</TranslatedText> :{" "}
+              <div className="border-t border-[#d7ddd4] pt-3 pb-0">
+                <h4 className="mb-2 text-center text-md font-semibold text-[#505e4d]">
+                  <TranslatedText>Payment We Accept</TranslatedText>
                 </h4>
-                <div className="ml-2 flex flex-wrap items-center gap-3 sm:ml-6">
-                  <div className="px-2 py-1 rounded flex items-center ">
-                    <img
-                      src="https://res.cloudinary.com/dyfhsu5v6/image/upload/v1757919726/1st_logo_v8x2hc.webp"
-                      alt="master"
-                      className="w-auto"
-                    />
-                  </div>
-                  <div className="px-2 py-1 rounded flex items-center ">
-                    <img
-                      src="https://res.cloudinary.com/dyfhsu5v6/image/upload/v1757937381/2nd_logo_x6jzhz.webp"
-                      alt="visa"
-                      className="w-auto"
-                    />
-                  </div>
-                  <div className="px-2 py-1 rounded flex items-center ">
-                    <img
-                      src="https://res.cloudinary.com/dyfhsu5v6/image/upload/v1757937401/3rd_logo_fmwdkp.webp"
-                      alt="tamara"
-                      className="w-auto"
-                    />
-                  </div>
+                <div className="flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-3 py-1">
+                  <img src="/visa (1).webp" alt="Visa" className="h-8 w-auto object-contain md:h-9" />
+                  <img src="/tabby (1).webp" alt="Tabby" className="h-8 w-auto object-contain md:h-9" />
+                  <img src="/tamara (1).webp" alt="Tamara" className="h-8 w-auto object-contain md:h-9" />
+                  <img src="/samsunng pay.webp" alt="Samsung Pay" className="h-10 w-auto object-contain md:h-11" />
+                  <img src="/marter.webp" alt="Mastercard" className="h-10 w-auto object-contain md:h-11" />
+                  <img src="/cod (1).webp" alt="COD" className="h-8 w-auto object-contain md:h-9" />
+                  <img src="/apple pay (1).webp" alt="Apple Pay" className="h-8 w-auto object-contain md:h-9" />
                 </div>
 
                 
@@ -3404,10 +3479,15 @@ const ProductDetails = () => {
             </div>
             
           </div>
+            </div>
+          </div>
+
+          {/* Service Features - Right Side */}
+         
         </div>
 
         {/* Add Frequently Bought Together Section Here */}
-        <FrequentlyBoughtTogether />
+        {!screenshotLayoutMode && <FrequentlyBoughtTogether />}
 
         {/* Tabs Section */}
         {/* <div className="bg-white rounded-lg shadow-sm mt-8">
@@ -3518,102 +3598,142 @@ const ProductDetails = () => {
 
 
 <div className="mt-8 rounded-2xl border border-[#d7ddd4] bg-white p-4 shadow-[0_8px_26px_rgba(80,94,77,0.08)] sm:p-6">
-  <div className="mb-6 flex flex-wrap gap-2 border-b border-[#d7ddd4] pb-3">
+  <div className="mb-6 flex flex-wrap justify-center gap-3 border-b border-[#d7ddd4] pb-4">
       <button
-        onClick={() => setActiveTab("description")}
-        className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap ${
+        onClick={() => scrollToDetailSection("keyFeatures")}
+        className={`inline-flex items-center justify-center rounded-full border px-5 py-2 text-base font-bold transition-all whitespace-nowrap ${
+          activeTab === "keyFeatures"
+            ? "border-[#505e4d] bg-[#505e4d] text-white shadow-sm"
+            : "border-[#d7ddd4] bg-white text-slate-700 hover:border-[#505e4d] hover:text-[#505e4d]"
+        }`}
+      >
+        <TranslatedText>Key Features</TranslatedText>
+      </button>
+      <button
+        onClick={() => scrollToDetailSection("description")}
+        className={`inline-flex items-center justify-center rounded-full border px-5 py-2 text-base font-bold transition-all whitespace-nowrap ${
           activeTab === "description"
-            ? "border-[#505e4d] bg-[#edf1eb] text-[#505e4d]"
-            : "border-[#d7ddd4] text-slate-600 hover:border-[#505e4d] hover:text-[#505e4d]"
+            ? "border-[#505e4d] bg-[#505e4d] text-white shadow-sm"
+            : "border-[#d7ddd4] bg-white text-slate-700 hover:border-[#505e4d] hover:text-[#505e4d]"
         }`}
       >
         <span className="hidden sm:inline"><TranslatedText>Product</TranslatedText> </span><TranslatedText>Description</TranslatedText>
       </button>
       <button
-        onClick={() => setActiveTab("information")}
-        className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap ${
+        onClick={() => scrollToDetailSection("information")}
+        className={`inline-flex items-center justify-center rounded-full border px-5 py-2 text-base font-bold transition-all whitespace-nowrap ${
           activeTab === "information"
-            ? "border-[#505e4d] bg-[#edf1eb] text-[#505e4d]"
-            : "border-[#d7ddd4] text-slate-600 hover:border-[#505e4d] hover:text-[#505e4d]"
+            ? "border-[#505e4d] bg-[#505e4d] text-white shadow-sm"
+            : "border-[#d7ddd4] bg-white text-slate-700 hover:border-[#505e4d] hover:text-[#505e4d]"
         }`}
       >
         <span className="hidden sm:inline"><TranslatedText>More</TranslatedText> </span><TranslatedText>Information</TranslatedText>
       </button>
       <button
-        onClick={() => setActiveTab("reviews")}
-        className={`rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors whitespace-nowrap ${
+        onClick={() => scrollToDetailSection("reviews")}
+        className={`inline-flex items-center justify-center rounded-full border px-5 py-2 text-base font-bold transition-all whitespace-nowrap ${
           activeTab === "reviews"
-            ? "border-[#505e4d] bg-[#edf1eb] text-[#505e4d]"
-            : "border-[#d7ddd4] text-slate-600 hover:border-[#505e4d] hover:text-[#505e4d]"
+            ? "border-[#505e4d] bg-[#505e4d] text-white shadow-sm"
+            : "border-[#d7ddd4] bg-white text-slate-700 hover:border-[#505e4d] hover:text-[#505e4d]"
         }`}
       >
         <TranslatedText>Reviews</TranslatedText> ({reviewStats.totalReviews || 0})
       </button>
   </div>
-  <div className="pb-1">
-    {activeTab === "description" && (
-      <div>
-        <h3 className="text-lg font-bold mb-4"><TranslatedText>Product Description</TranslatedText></h3>
-        <TranslatedTipTapRenderer 
-          content={product.description} 
+  <div className="space-y-8 pb-1">
+    <section ref={keyFeaturesSectionRef} className="scroll-mt-24">
+      <div className="mb-4 flex items-center">
+        <span className="mr-3 h-8 w-1.5 rounded-full bg-[#505e4d]" />
+        <h3 className="text-xl font-extrabold tracking-tight text-slate-900">
+          <TranslatedText>Key Features</TranslatedText>
+        </h3>
+      </div>
+      {keyFeaturesContent ? (
+        <TranslatedTipTapRenderer
+          content={keyFeaturesContent}
           sourceDoc={product}
-          fieldName="description"
+          fieldName={keyFeaturesFieldName}
         />
-      </div>
-    )}
+      ) : (
+        <p className="text-sm text-gray-600">
+          <TranslatedText>No key features available for this product.</TranslatedText>
+        </p>
+      )}
+    </section>
 
-    {activeTab === "information" && (
-      <div>
-        <h3 className="text-lg font-bold mb-4"><TranslatedText>More Information</TranslatedText></h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <tbody>
+    <section ref={descriptionSectionRef} className="scroll-mt-24 border-t border-[#e2e7df] pt-6">
+      <div className="mb-4 flex items-center">
+        <span className="mr-3 h-8 w-1.5 rounded-full bg-[#505e4d]" />
+        <h3 className="text-xl font-extrabold tracking-tight text-slate-900">
+          <TranslatedText>Product Description</TranslatedText>
+        </h3>
+      </div>
+      <TranslatedTipTapRenderer 
+        content={product.description} 
+        sourceDoc={product}
+        fieldName="description"
+      />
+    </section>
+
+    <section ref={informationSectionRef} className="scroll-mt-24 border-t border-[#e2e7df] pt-6">
+      <div className="mb-4 flex items-center">
+        <span className="mr-3 h-8 w-1.5 rounded-full bg-[#505e4d]" />
+        <h3 className="text-xl font-extrabold tracking-tight text-slate-900">
+          <TranslatedText>More Information</TranslatedText>
+        </h3>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <tbody>
+            <tr className="border-b border-[#e2e7df]">
+              <td className="w-1/4 px-0 py-3 font-medium text-gray-900"><TranslatedText>Brand</TranslatedText></td>
+              <td className="px-2 py-3 text-gray-700">
+                <TranslatedText text={product.brand?.name || product.brand || "N/A"}>{product.brand?.name || product.brand || "N/A"}</TranslatedText>
+              </td>
+            </tr>
+            <tr className="border-b border-[#e2e7df]">
+              <td className="w-1/4 px-0 py-3 font-medium text-gray-900">
+                <TranslatedText>Model Number</TranslatedText>
+              </td>
+              <td className="px-2 py-3 text-gray-700">{product.sku || "N/A"}</td>
+            </tr>
+            <tr className="border-b border-[#e2e7df]">
+              <td className="w-1/4 px-0 py-3 font-medium text-gray-900"><TranslatedText>Category</TranslatedText></td>
+              <td className="px-2 py-3 text-gray-700">
+                <TranslatedText text={product.category?.name || product.category || "N/A"}>{product.category?.name || product.category || "N/A"}</TranslatedText>
+              </td>
+            </tr>
+            {product.warranty && (
               <tr className="border-b border-[#e2e7df]">
-                <td className="w-1/4 px-0 py-3 font-medium text-gray-900"><TranslatedText>Brand</TranslatedText></td>
-                <td className="px-2 py-3 text-gray-700">
-                  <TranslatedText text={product.brand?.name || product.brand || "N/A"}>{product.brand?.name || product.brand || "N/A"}</TranslatedText>
-                </td>
+                <td className="w-1/4 px-0 py-3 font-medium text-gray-900"><TranslatedText>Warranty</TranslatedText></td>
+                <td className="px-2 py-3 text-gray-700"><TranslatedText text={product.warranty}>{product.warranty}</TranslatedText></td>
               </tr>
-              <tr className="border-b border-[#e2e7df]">
-                <td className="w-1/4 px-0 py-3 font-medium text-gray-900">
-                  <TranslatedText>Model Number</TranslatedText>
-                </td>
-                <td className="px-2 py-3 text-gray-700">{product.sku || "N/A"}</td>
-              </tr>
-              <tr className="border-b border-[#e2e7df]">
-                <td className="w-1/4 px-0 py-3 font-medium text-gray-900"><TranslatedText>Category</TranslatedText></td>
-                <td className="px-2 py-3 text-gray-700">
-                  <TranslatedText text={product.category?.name || product.category || "N/A"}>{product.category?.name || product.category || "N/A"}</TranslatedText>
-                </td>
-              </tr>
-              {product.warranty && (
-                <tr className="border-b border-[#e2e7df]">
-                  <td className="w-1/4 px-0 py-3 font-medium text-gray-900"><TranslatedText>Warranty</TranslatedText></td>
-                  <td className="px-2 py-3 text-gray-700"><TranslatedText text={product.warranty}>{product.warranty}</TranslatedText></td>
+            )}
+
+            {product.specifications &&
+              product.specifications.length > 0 &&
+              product.specifications.map((spec, index) => (
+                <tr key={index} className="border-b border-[#e2e7df]">
+                  <td className="w-1/4 px-0 py-3 font-medium text-gray-900">
+                    <TranslatedText text={spec.key}>{spec.key}</TranslatedText>
+                  </td>
+                  <td className="px-2 py-3 text-gray-700"><TranslatedText text={spec.value}>{spec.value}</TranslatedText></td>
                 </tr>
-              )}
-
-              {product.specifications &&
-                product.specifications.length > 0 &&
-                product.specifications.map((spec, index) => (
-                  <tr key={index} className="border-b border-[#e2e7df]">
-                    <td className="w-1/4 px-0 py-3 font-medium text-gray-900">
-                      <TranslatedText text={spec.key}>{spec.key}</TranslatedText>
-                    </td>
-                    <td className="px-2 py-3 text-gray-700"><TranslatedText text={spec.value}>{spec.value}</TranslatedText></td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
+              ))}
+          </tbody>
+        </table>
       </div>
-    )}
+    </section>
 
-    {activeTab === "reviews" && (
-      <div data-review-section>
-        <ReviewSection productId={product._id} onStatsUpdate={setReviewStats} />
+    <section ref={reviewsSectionRef} className="scroll-mt-24 border-t border-[#e2e7df] pt-6" data-review-section>
+      <div className="mb-4 flex items-center">
+        <span className="mr-3 h-8 w-1.5 rounded-full bg-[#505e4d]" />
+        <h3 className="text-xl font-extrabold tracking-tight text-slate-900">
+        <TranslatedText>Reviews</TranslatedText> ({reviewStats.totalReviews || 0})
+        </h3>
       </div>
-    )}
+      <ReviewSection productId={product._id} onStatsUpdate={setReviewStats} />
+    </section>
   </div>
 </div>
 
@@ -3992,10 +4112,10 @@ const ProductDetails = () => {
       </div> */}
 
       {showCallbackModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg relative max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-[900px] rounded-2xl border border-[#d5ded2] bg-white shadow-[0_22px_70px_rgba(15,23,42,0.28)]">
             <button
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              className="absolute top-4 right-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-500 shadow-sm transition-colors hover:bg-[#f2f5f1] hover:text-[#4f6b53]"
               onClick={() => {
                 setShowCallbackModal(false)
                 setEmailChanged(false)
@@ -4004,10 +4124,13 @@ const ProductDetails = () => {
                 setVerificationVerified(false)
               }}
             >
-              <X size={24} />
+              <X size={18} />
             </button>
-            <div className="flex flex-col gap-4">
-              <h2 className="text-xl text-center font-bold mb-2">Request a Callback</h2>
+            <div className="border-b border-[#e4ece1] bg-[#f4f8f3] px-6 py-4">
+              <h2 className="text-lg font-bold text-[#1f2a1f]">Request a Callback</h2>
+              <p className="mt-1 text-xs text-[#667561]">Share your details and we will call you shortly.</p>
+            </div>
+            <div className="px-6 py-4">
               {callbackSuccess ? (
                 <div className="text-green-600 font-medium text-center py-8 flex flex-col items-center gap-2">
                   <CheckCircle size={48} className="text-green-500" />
@@ -4018,17 +4141,17 @@ const ProductDetails = () => {
                 <form onSubmit={handleCallbackSubmit} className="space-y-4">
                   {/* Full Name Field */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <label className="mb-2 block text-sm font-medium text-[#2e3a2c]">Full Name</label>
                     <div className="flex items-center gap-3">
-                      <div className="text-[#505e4d]">
-                        <User size={24} />
+                      <div className="text-[#5b705f]">
+                        <User size={22} />
                       </div>
                       <input
                         type="text"
                         name="name"
                         value={callbackForm.name}
                         onChange={handleCallbackChange}
-                        className="flex-1 py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#505e4d]"
+                        className="flex-1 rounded-lg border border-[#ccd8c8] bg-[#f9fbf8] px-3 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7b8873]"
                         placeholder="Enter your full name"
                         required
                       />
@@ -4037,10 +4160,10 @@ const ProductDetails = () => {
 
                   {/* Email Field with Verification */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label className="mb-2 block text-sm font-medium text-[#2e3a2c]">Email</label>
                     <div className="flex items-center gap-3">
-                      <div className="text-[#505e4d]">
-                        <Mail size={24} />
+                      <div className="text-[#5b705f]">
+                        <Mail size={22} />
                       </div>
                       <div className="flex-1">
                         <input
@@ -4048,7 +4171,7 @@ const ProductDetails = () => {
                           name="email"
                           value={callbackForm.email}
                           onChange={handleCallbackChange}
-                          className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#505e4d]"
+                          className="w-full rounded-lg border border-[#ccd8c8] bg-[#f9fbf8] px-3 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7b8873]"
                           placeholder="Enter your email"
                           required
                         />
@@ -4060,13 +4183,13 @@ const ProductDetails = () => {
                     
                     {/* Email Verification Section */}
                     {emailChanged && !verificationVerified && (
-                      <div className="mt-3 ml-9 space-y-3">
+                      <div className="mt-3 space-y-3 rounded-xl border border-[#dce6d8] bg-[#f7faf6] p-3">
                         {!verificationSent ? (
                           <button
                             type="button"
                             onClick={handleSendVerificationCode}
                             disabled={verificationLoading}
-                            className="text-sm bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50"
+                            className="rounded-md bg-[#0f4c81] px-4 py-2 text-sm text-white transition-colors hover:bg-[#0c3e6a] disabled:opacity-50"
                           >
                             {verificationLoading ? "Sending..." : "Send Verification Code"}
                           </button>
@@ -4078,7 +4201,7 @@ const ProductDetails = () => {
                                 type="text"
                                 value={verificationCode}
                                 onChange={(e) => setVerificationCode(e.target.value)}
-                                className="flex-1 py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#505e4d]"
+                                className="flex-1 rounded-lg border border-[#ccd8c8] bg-white px-3 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7b8873]"
                                 placeholder="Enter 6-digit code"
                                 maxLength={6}
                               />
@@ -4086,7 +4209,7 @@ const ProductDetails = () => {
                                 type="button"
                                 onClick={handleVerifyCode}
                                 disabled={verificationLoading || verificationCode.length !== 6}
-                                className="bg-[#505e4d] text-white px-4 py-2 rounded-md hover:bg-[#465342] disabled:opacity-50"
+                                className="rounded-md bg-[#4f6b53] px-4 py-2 text-white transition-colors hover:bg-[#3f5542] disabled:opacity-50"
                               >
                                 {verificationLoading ? "..." : "Verify"}
                               </button>
@@ -4095,7 +4218,7 @@ const ProductDetails = () => {
                               type="button"
                               onClick={handleSendVerificationCode}
                               disabled={verificationLoading}
-                              className="text-sm text-blue-500 hover:underline"
+                              className="text-sm text-[#4f6b53] hover:underline"
                             >
                               Resend Code
                             </button>
@@ -4107,39 +4230,41 @@ const ProductDetails = () => {
 
                   {/* Phone Number with Country Code */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <label className="mb-2 block text-sm font-medium text-[#2e3a2c]">Phone Number</label>
                     <div className="flex items-center gap-3">
-                      <div className="text-[#505e4d]">
-                        <Phone size={24} />
+                      <div className="text-[#5b705f]">
+                        <Phone size={22} />
                       </div>
-                      <PhoneInput
-                        international
-                        defaultCountry="AE"
-                        value={phoneValue}
-                        onChange={setPhoneValue}
-                        className="flex-1"
-                        placeholder="Enter phone number"
-                        required
-                      />
+                      <div className="flex-1 rounded-lg border border-[#ccd8c8] bg-[#f9fbf8] px-3 py-1.5">
+                        <PhoneInput
+                          international
+                          defaultCountry="AE"
+                          value={phoneValue}
+                          onChange={setPhoneValue}
+                          className="flex-1"
+                          placeholder="Enter phone number"
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
                   {/* Customer Note */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Customer Note (Optional)</label>
+                    <label className="mb-2 block text-sm font-medium text-[#2e3a2c]">Customer Note (Optional)</label>
                     <textarea
                       name="customerNote"
                       value={callbackForm.customerNote}
                       onChange={handleCallbackChange}
-                      rows={4}
-                      className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#505e4d]"
+                      rows={3}
+                      className="w-full rounded-lg border border-[#ccd8c8] bg-[#f9fbf8] px-3 py-2 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7b8873]"
                       placeholder="Any specific requirements or questions..."
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-[#505e4d] text-white py-3 rounded-md font-medium hover:bg-[#465342] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full rounded-lg bg-[#4f6b53] py-3 font-semibold text-white transition-colors hover:bg-[#3f5542] disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={callbackLoading || (emailChanged && !verificationVerified)}
                   >
                     {callbackLoading ? "Submitting..." : "Submit Request"}
