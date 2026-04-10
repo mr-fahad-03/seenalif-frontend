@@ -306,6 +306,7 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
 
   const visibleCategories = getVisibleCategories();
   const shouldShowArrows = allSliderItems.length > visibleCount;
+  const isStaticLayout = allSliderItems.length <= visibleCount;
 
   const sliderStyle = {
     transform: `translateX(${dragOffset}px)`,
@@ -339,7 +340,9 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
           >
             <div
               className={`flex items-center transition-transform duration-300 ease-in-out ${
-                allSliderItems.length <= visibleCount ? 'justify-center' : 'justify-evenly'
+                isStaticLayout
+                  ? 'justify-center gap-x-2 sm:gap-x-3 lg:gap-x-3 xl:gap-x-4'
+                  : 'justify-evenly'
               }`}
               style={shouldShowArrows ? sliderStyle : {}}
             >
@@ -464,6 +467,7 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                 };
 
                 const layoutClasses = getLayoutClasses();
+                const textClassesWithDesktopSpacing = `${layoutClasses.textClass} lg:px-3 xl:px-4`;
 
                 return (
                   <button
@@ -471,7 +475,7 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                     onClick={handleItemClick}
                     className={layoutClasses.container}
                     style={{
-                      width: allSliderItems.length <= visibleCount ? 'auto' : `${100 / visibleCount}%`,
+                      width: isStaticLayout ? 'auto' : `${100 / visibleCount}%`,
                       maxWidth: "160px",
                       minWidth: "80px",
                     }}
@@ -502,7 +506,7 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                             </div>
                           )}
                         </div>
-                        <span className={layoutClasses.textClass}>
+                        <span className={textClassesWithDesktopSpacing}>
                           {(() => {
                             const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
                             const name = item.name;
@@ -540,7 +544,7 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                           )}
                         </div>
 
-                        <span className={layoutClasses.textClass}>
+                        <span className={textClassesWithDesktopSpacing}>
                           {(() => {
                             const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
                             const name = item.name;
