@@ -32,10 +32,10 @@ export default function PrivacyPolicyArabic() {
           <div>
             <h2 className="text-xl font-semibold text-black mb-2">مقدمة</h2>
             <p>
-              تحترم شركة Grabatoz المدعومة من Crown Excel General Trading LLC
+              تحترم شركة Seen Alif المدعومة من Crown Excel General Trading LLC
               ("نحن"، "لنا" أو "خاصتنا") خصوصيتك وتلتزم بحماية بياناتك الشخصية.
               توضح سياسة الخصوصية هذه كيفية جمع معلوماتك واستخدامها وحمايتها عند
-              استخدامك لموقعنا الإلكتروني grabatoz.ae والخدمات ذات الصلة.
+              استخدامك لموقعنا الإلكتروني seenalif.com والخدمات ذات الصلة.
             </p>
           </div>
 
@@ -80,7 +80,7 @@ export default function PrivacyPolicyArabic() {
               <li>يمكنك إلغاء الاشتراك في الاتصالات التسويقية في أي وقت.</li>
               <li>
                 لأي استفسارات متعلقة بالخصوصية أو لممارسة حقوقك، يرجى التواصل معنا على:
-                <span className="text-blue-600"> customercare@grabatoz.ae</span>
+                <span className="text-blue-600"> Support@seenalif.com</span>
               </li>
             </ul>
           </div>
@@ -107,7 +107,7 @@ export default function PrivacyPolicyArabic() {
             <p>شركة Crown Excel General Trading LLC</p>
             <p>صندوق بريد: 241975، دبي</p>
             <p>هاتف: +971 0505033860</p>
-            <p>البريد الإلكتروني: customercare@grabatoz.ae</p>
+            <p>البريد الإلكتروني: Support@seenalif.com</p>
             <p>ساعات خدمة العملاء: يوميًا من 9:00 صباحًا حتى 7:00 مساءً</p>
           </div>
         </section>

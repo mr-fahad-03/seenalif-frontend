@@ -465,7 +465,7 @@ const GamingZonePage = () => {
   return (
     <>
       <Helmet>
-        <title>{gamingZonePage?.name || "Gaming Zone"} - Graba2z</title>
+        <title>{gamingZonePage?.name || "Gaming Zone"} - Seen Alif</title>
         <meta name="description" content={`Browse ${gamingZonePage?.name} products`} />
       </Helmet>
 
@@ -1240,4 +1240,3 @@ const GamingZonePage = () => {
 }
 
 export default GamingZonePage
-

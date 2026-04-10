@@ -276,10 +276,10 @@ const BlogList = () => {
   return (
     <>
       <SEO
-        title="Blogs - GrabA2Z | Tech Insights, Reviews & Guides"
+        title="Blogs - Seen Alif | Tech Insights, Reviews & Guides"
         description="Explore our blog for the latest tech news, product reviews, buying guides, and expert insights on laptops, computers, and technology."
         keywords="tech blog, laptop reviews, computer guides, technology news, product reviews, tech insights"
-        canonicalUrl="https://www.grabatoz.ae/blogs"
+        canonicalUrl="https://www.seenalif.com/blogs"
       />
 
       <div className="min-h-screen bg-white overflow-x-hidden">

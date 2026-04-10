@@ -36,7 +36,7 @@ const ProductSchema = ({ product }) => {
         "url": window.location.href,
         "seller": {
           "@type": "Organization",
-          "name": "Grab AtoZ"
+          "name": "Seen Alif"
         }
       }
     };

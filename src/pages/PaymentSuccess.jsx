@@ -28,7 +28,7 @@ const PaymentSuccess = () => {
         event: "purchase",
         ecommerce: {
           transaction_id: orderId,
-          affiliation: "Graba2z Online Store",
+          affiliation: "Seen Alif Online Store",
           currency: "AED",
           value: Number.parseFloat(total) || 0,
           tax: 0, // VAT is included in prices

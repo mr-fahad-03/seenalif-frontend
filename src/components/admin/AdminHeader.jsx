@@ -10,6 +10,8 @@ const AdminHeader = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [showDropdown, setShowDropdown] = useState(false)
+  const adminName = admin?.name || "Admin User"
+  const adminEmail = admin?.email || ""
 
   const handleLogout = () => {
     adminLogout()
@@ -40,8 +42,8 @@ const AdminHeader = () => {
               <User className="w-4 h-4 text-white" />
             </div>
             <div className="text-left">
-              <p className="text-sm font-medium text-gray-900">{admin?.name || "Admin User"}</p>
-              <p className="text-xs text-gray-500">{admin?.email || "admin@grabatoz.ae"}</p>
+              <p className="text-sm font-medium text-gray-900">{adminName}</p>
+              <p className="text-xs text-gray-500">{adminEmail}</p>
             </div>
             <ChevronDown className="w-4 h-4 text-gray-400" />
           </button>
@@ -50,8 +52,8 @@ const AdminHeader = () => {
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
               <div className="px-4 py-2 border-b border-gray-100">
-                <p className="text-sm font-medium text-gray-900">{admin?.name || "Admin User"}</p>
-                <p className="text-xs text-gray-500">{admin?.email || "admin@grabatoz.ae"}</p>
+                <p className="text-sm font-medium text-gray-900">{adminName}</p>
+                <p className="text-xs text-gray-500">{adminEmail}</p>
               </div>
               <button
                 onClick={handleLogout}

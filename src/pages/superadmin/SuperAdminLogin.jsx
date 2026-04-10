@@ -150,7 +150,7 @@ const SuperAdminLogin = () => {
           {/* Footer */}
           <div className="mt-8 text-center">
             <p className="text-slate-500 text-sm">
-              <a href="grabatoz.ae">Grab A2Z</a> &copy; All Copyrights Reserved
+              <a href="https://www.seenalif.com">Seen Alif</a> &copy; All Copyrights Reserved
             </p>
           </div>
         </div>

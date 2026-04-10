@@ -58,7 +58,7 @@ const STORES = [
   },
   {
     storeId: "4",
-    name: "GrabAtoZ",
+    name: "Seen Alif",
     address:
       "Al Jahra Building, 2nd floor, 18th st - Khalid Bin Al Waleed Rd - Al Raffa - Dubai - United Arab Emirates",
     phone: "+97143395794",
@@ -457,12 +457,12 @@ const Checkout = () => {
       },
       order_reference_id: `ORDER_${Date.now()}`,
       order_number: `ORD_${Date.now()}`,
-      description: `Order for ${cartItems.length} items from Graba2z`,
+      description: `Order for ${cartItems.length} items from Seen Alif`,
       country_code: "AE",
       payment_type: "PAY_BY_INSTALMENTS",
       instalments: 3,
       locale: "en_US",
-      platform: "Graba2z Online Store",
+      platform: "Seen Alif Online Store",
       is_mobile: window.innerWidth <= 768,
       consumer: {
         first_name: formData.name.split(" ")[0] || "Customer",
@@ -729,7 +729,7 @@ const Checkout = () => {
           event: "purchase",
           ecommerce: {
             transaction_id: orderId,
-            affiliation: "Graba2z Online Store",
+            affiliation: "Seen Alif Online Store",
             currency: "AED",
             value: finalTotal,
             tax: 0, // VAT included in prices
@@ -784,12 +784,12 @@ const Checkout = () => {
           },
           order_reference_id: orderId,
           order_number: `ORD_${orderId}`,
-          description: `Order for ${cartItems.length} items from Graba2z`,
+          description: `Order for ${cartItems.length} items from Seen Alif`,
           country_code: "AE",
           payment_type: "PAY_BY_INSTALMENTS",
           instalments: 3,
           locale: "en_US",
-          platform: "Graba2z Online Store",
+          platform: "Seen Alif Online Store",
           is_mobile: window.innerWidth <= 768,
           consumer: {
             first_name: formData.name.split(" ")[0] || "Customer",
@@ -2130,6 +2130,5 @@ const Checkout = () => {
 }
 
 export default Checkout
-
 
 

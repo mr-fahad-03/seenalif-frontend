@@ -179,7 +179,7 @@ const BlogPost = () => {
   
   // Article structured data for Google
   const articleData = {
-    author: blog.postedBy || "Graba2z Team",
+    author: blog.postedBy || "Seen Alif Team",
     datePublished: blog.createdAt,
     dateModified: blog.updatedAt || blog.createdAt,
     tags: blog.tags || []

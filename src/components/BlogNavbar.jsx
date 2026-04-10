@@ -187,12 +187,12 @@ const Header = () => {
               {showLogo ? (
                 <img
                   src="/admin-logo.svg"
-                  alt="GrabaZz logo"
+                  alt="Seen Alif logo"
                   className="h-8 w-auto object-contain"
                   onError={() => setShowLogo(false)}
                 />
               ) : (
-                <span className="text-lg font-bold text-gray-900">GrabaZz</span>
+                <span className="text-lg font-bold text-gray-900">Seen Alif</span>
               )}
             </Link>
           </div>
@@ -211,7 +211,7 @@ const Header = () => {
               </button>
             )}
              <Link
-              to="https://www.grabatoz.ae/"
+              to="https://www.seenalif.com/"
               target="_blank"
               aria-label="Shop Now"
               className="p-2 text-gray-700 hover:text-gray-900"
@@ -263,12 +263,12 @@ const Header = () => {
             {showLogo ? (
               <img
                 src="/admin-logo.svg"
-                alt="GrabaZz logo"
+                alt="Seen Alif logo"
                 className="h-14 w-auto object-contain"
                 onError={() => setShowLogo(false)}
               />
             ) : (
-              <h1 className="text-xl font-bold text-gray-900">GrabaZz</h1>
+              <h1 className="text-xl font-bold text-gray-900">Seen Alif</h1>
             )}
           </Link>
           <form onSubmit={handleSearch} className="flex-1 max-w-lg mx-8">
@@ -290,7 +290,7 @@ const Header = () => {
             </div>
           </form>
           <Link
-            to="https://www.grabatoz.ae/"
+            to="https://www.seenalif.com/"
             target="_blank"
             className="hidden md:flex items-center space-x-2 px-6 py-2 border hover:border-2 border-gray-300 hover:border-lime-300 text-black hover:bg-lime-500 hover:text-white transition-colors font-medium"
           >

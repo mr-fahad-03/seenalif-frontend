@@ -218,7 +218,7 @@ export const trackPurchase = (
   taxAmount = 0,
   shippingCost = 0,
   couponCode = null,
-  affiliation = "Graba2z Online Store",
+  affiliation = "Seen Alif Online Store",
 ) => {
   const trackingItems = Array.isArray(items) ? formatCartItemsForTracking(items) : []
 

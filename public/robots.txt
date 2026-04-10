@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
-Sitemap: https://www.grabatoz.ae/ae-ar/robots.txt
-Sitemap: https://www.grabatoz.ae/ae-en/sitemap.xml
+Sitemap: https://www.seenalif.com/ae-ar/robots.txt
+Sitemap: https://www.seenalif.com/ae-en/sitemap.xml

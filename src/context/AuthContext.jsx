@@ -5,6 +5,15 @@ import { authAPI } from "../services/api"
 import { adminAPI } from "../services/api"
 
 // Initial state - load permissions from localStorage if available
+const getInitialAdmin = () => {
+  try {
+    const admin = localStorage.getItem("adminUser")
+    return admin ? JSON.parse(admin) : null
+  } catch {
+    return null
+  }
+}
+
 const getInitialPermissions = () => {
   try {
     const permissions = localStorage.getItem("adminPermissions")
@@ -20,7 +29,7 @@ const initialState = {
   isAuthenticated: false,
   loading: true,
   error: null,
-  admin: null,
+  admin: getInitialAdmin(),
   adminToken: localStorage.getItem("adminToken"),
   isAdminAuthenticated: !!localStorage.getItem("adminToken"),
   isSuperAdmin: localStorage.getItem("isSuperAdmin") === "true",
@@ -294,6 +303,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const data = await adminAPI.login(credentials)
       localStorage.setItem("adminToken", data.token)
+      localStorage.setItem("adminUser", JSON.stringify(data))
       // Store permissions in localStorage for persistence
       localStorage.setItem("isSuperAdmin", data.isSuperAdmin ? "true" : "false")
       localStorage.setItem("adminPermissions", JSON.stringify(data.permissions || {}))
@@ -312,6 +322,7 @@ export const AuthProvider = ({ children }) => {
 
   const adminLogout = () => {
     localStorage.removeItem("adminToken")
+    localStorage.removeItem("adminUser")
     localStorage.removeItem("isSuperAdmin")
     localStorage.removeItem("adminPermissions")
     dispatch({ type: AUTH_ACTIONS.ADMIN_LOGOUT })
@@ -330,14 +341,38 @@ export const AuthProvider = ({ children }) => {
   // Load admin permissions from localStorage on mount
   useEffect(() => {
     const adminToken = localStorage.getItem("adminToken")
-    if (adminToken) {
-      const isSuperAdmin = localStorage.getItem("isSuperAdmin") === "true"
-      const permissions = JSON.parse(localStorage.getItem("adminPermissions") || "{}")
-      dispatch({
-        type: AUTH_ACTIONS.SET_ADMIN_PERMISSIONS,
-        payload: { isSuperAdmin, permissions },
-      })
+    if (!adminToken) return
+
+    const isSuperAdmin = localStorage.getItem("isSuperAdmin") === "true"
+    const permissions = JSON.parse(localStorage.getItem("adminPermissions") || "{}")
+    dispatch({
+      type: AUTH_ACTIONS.SET_ADMIN_PERMISSIONS,
+      payload: { isSuperAdmin, permissions },
+    })
+
+    const loadAdminProfile = async () => {
+      try {
+        const adminProfile = await adminAPI.getProfile()
+        localStorage.setItem("adminUser", JSON.stringify(adminProfile))
+        localStorage.setItem("isSuperAdmin", adminProfile.isSuperAdmin ? "true" : "false")
+        localStorage.setItem("adminPermissions", JSON.stringify(adminProfile.permissions || {}))
+        dispatch({
+          type: AUTH_ACTIONS.ADMIN_LOGIN_SUCCESS,
+          payload: {
+            admin: adminProfile,
+            token: adminToken,
+          },
+        })
+      } catch (error) {
+        localStorage.removeItem("adminToken")
+        localStorage.removeItem("adminUser")
+        localStorage.removeItem("isSuperAdmin")
+        localStorage.removeItem("adminPermissions")
+        dispatch({ type: AUTH_ACTIONS.ADMIN_LOGOUT })
+      }
     }
+
+    loadAdminProfile()
   }, [])
 
   const value = {

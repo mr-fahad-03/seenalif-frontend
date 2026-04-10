@@ -89,8 +89,8 @@ const InvoiceComponent = forwardRef(({ order }, ref) => {
               <strong>We Are Here For You</strong>
             </p>
             <div className="text-sm text-black space-y-1">
-              <p>✉️ Email: orders@grabatoz.com</p>
-              <p>🌐 Website: www.grabatoz.com</p>
+              <p>✉️ Email: orders@seenalif.com</p>
+              <p>🌐 Website: www.seenalif.com</p>
               <p>📞 Phone: +971 50 860 4360</p>
             </div>
           </div>

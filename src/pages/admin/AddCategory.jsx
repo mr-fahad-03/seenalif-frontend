@@ -203,7 +203,7 @@ const AddCategory = () => {
                   onChange={handleChange}
                   maxLength={100}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="e.g., Best Printers & Copiers in UAE | Grabatoz"
+                  placeholder="e.g., Best Printers & Copiers in UAE | Seen Alif"
                 />
                 <div className="flex justify-between mt-1">
                   <p className="text-sm text-gray-500">

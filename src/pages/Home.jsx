@@ -981,9 +981,11 @@ const Home = () => {
             {accessoriesBanner ? (
               <Link to={getLocalizedPath(accessoriesBanner.link || "/product-category/accessories")}>
                 <img
-                  src={getOptimizedImageUrl(accessoriesBanner.image, { width: 1311, height: 300, quality: 68 })}
+                  // Use the original uploaded banner here to avoid visible compression artifacts
+                  // on full-width artwork that contains text and fine details.
+                  src={getFullImageUrl(accessoriesBanner.image)}
                   alt={accessoriesBanner.title || "Accessories Promotion Banner"}
-                  className="w-full h-full cover rounded-lg"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               </Link>
             ) : null}
@@ -1185,9 +1187,9 @@ const Home = () => {
         {getBannersForSection("networking", "home-category-banner").length > 0 ? (
           <Link to={getLocalizedPath(getBannersForSection("networking", "home-category-banner")[0].link || "/product-category/computers/networking")}>
             <img
-              src={getOptimizedImageUrl(getBannersForSection("networking", "home-category-banner")[0].image, { width: 1311, height: 300, quality: 68 })}
+              src={getFullImageUrl(getBannersForSection("networking", "home-category-banner")[0].image)}
               alt={getBannersForSection("networking", "home-category-banner")[0].title || "Networking Banner"}
-              className="w-full h-full cover rounded-lg"
+              className="w-full h-full object-cover rounded-lg"
               onError={(e) => {
                 e.target.onerror = null;
                 if (window.innerWidth < 1024) {
@@ -2134,7 +2136,6 @@ const getStatusColor = (status) => {
 }
 
 export default Home
-
 
 
 
