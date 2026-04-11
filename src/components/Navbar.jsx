@@ -884,7 +884,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to={getLocalizedPath("/")} className="flex shrink-0 items-center space-x-2">
               <div className="w-36 xl:w-40 2xl:w-44 h-auto flex items-center justify-center">
-                <img src="/seenalif (1).png" alt="Logo" width="180" height="30" className="w-full h-full object-contain" />
+                <img src="/seenalif.webp" alt="Logo" width="180" height="30" className="w-full h-full object-contain" />
               </div>
             </Link>
 
@@ -1172,7 +1172,7 @@ const Navbar = () => {
 
           {/* Logo */}
           <Link to={getLocalizedPath("/")} className="flex items-center">
-            <img src="/seenalif (1).png" alt="Logo" width="180" height="30" className="h-7 w-auto object-contain" />
+            <img src="/seenalif.webp" alt="Logo" width="180" height="30" className="h-7 w-auto object-contain" />
           </Link>
 
           {/* Search Icon */}
@@ -1545,6 +1545,5 @@ const Navbar = () => {
 }
 
 export default Navbar
-
 
 
