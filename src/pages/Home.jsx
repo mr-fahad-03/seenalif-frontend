@@ -977,7 +977,7 @@ const Home = () => {
         const accessoriesBanner = getBannersForSection("accessories", "home-category-banner")[0]
 
         return (
-          <div className="mx-5 md:mx-9 my-4 h-[160px] lg:h-[300px]">
+          <div className="mx-5 md:mx-9 my-4">
             {accessoriesBanner ? (
               <Link to={getLocalizedPath(accessoriesBanner.link || "/product-category/accessories")}>
                 <img
@@ -985,7 +985,7 @@ const Home = () => {
                   // on full-width artwork that contains text and fine details.
                   src={getFullImageUrl(accessoriesBanner.image)}
                   alt={accessoriesBanner.title || "Accessories Promotion Banner"}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="block w-full h-auto rounded-lg"
                 />
               </Link>
             ) : null}
@@ -2136,6 +2136,5 @@ const getStatusColor = (status) => {
 }
 
 export default Home
-
 
 
