@@ -883,7 +883,7 @@ const Home = () => {
         const dualBanners = getBannersForSection("hp-dell-desktop", "home-brand-dual").slice(0, 2)
 
         return (
-          <div className="hidden md:flex gap-2 mx-5 md:mx-9 h-[270px]">
+          <div className="hidden md:flex gap-2 mx-5 md:mx-9">
             {[0, 1].map((slot) => {
               const banner = dualBanners[slot]
               return (
@@ -891,9 +891,9 @@ const Home = () => {
                   {banner ? (
                     <Link to={getBannerLink(banner, slot === 0 ? brandUrls.HP : brandUrls.Dell)}>
                       <img
-                        src={getOptimizedImageUrl(banner.image, { width: 652, height: 270, quality: 70 })}
+                        src={getFullImageUrl(banner.image)}
                         alt={banner.title || (slot === 0 ? "HP Products Banner" : "Dell Products Banner")}
-                        className="w-full h-full bg-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                        className="block w-full h-auto rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                       />
                     </Link>
                   ) : null}
@@ -2136,5 +2136,4 @@ const getStatusColor = (status) => {
 }
 
 export default Home
-
 
