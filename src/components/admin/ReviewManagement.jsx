@@ -81,7 +81,7 @@ const ReviewManagement = () => {
   // Get the correct API base URL
   const getApiBaseUrl = () => {
     const isDevelopment = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-    return isDevelopment ? "http://localhost:5000" : "https://api.grabatoz.ae"
+    return isDevelopment ? "http://localhost:5001" : "https://api.grabatoz.ae"
   }
 
   const fetchReviews = async () => {

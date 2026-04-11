@@ -10,7 +10,7 @@ const resolveApiUrl = () => {
   if (envUrl && /^https?:\/\//i.test(envUrl)) return envUrl.replace(/\/$/, "")
 
   // Default local API during localhost development.
-  if (isLocalHost) return "http://localhost:5000"
+  if (isLocalHost) return "http://localhost:5001"
 
   // Production fallback.
   return "https://api.grabatoz.ae"
