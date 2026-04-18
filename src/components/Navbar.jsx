@@ -922,7 +922,7 @@ const Navbar = () => {
                                   isActive ? "bg-[#505e4d] text-white" : "text-gray-700 hover:bg-gray-100"
                                 }`}
                               >
-                                <span className="line-clamp-1">
+                                <span className="whitespace-normal break-words pr-2">
                                   <TranslatedText text={parentCategory.name} sourceDoc={parentCategory} fieldName="name" />
                                 </span>
                                 <ChevronRight className="h-4 w-4 shrink-0" />
@@ -973,7 +973,7 @@ const Navbar = () => {
                                       isActive ? "bg-[#505e4d] text-white" : "text-gray-700 hover:bg-gray-100"
                                     }`}
                                   >
-                                    <span className="line-clamp-1">
+                                    <span className="whitespace-normal break-words pr-2">
                                       <TranslatedText text={item.name} sourceDoc={item} fieldName="name" />
                                     </span>
                                     {hasChildren && <ChevronRight className="h-4 w-4 shrink-0" />}

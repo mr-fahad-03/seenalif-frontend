@@ -3,12 +3,19 @@ import axios from "axios"
 import { Shield, Check, ChevronRight } from "lucide-react"
 import config from "../config/config"
 
-const BuyerProtectionSection = ({ productId, productPrice, onSelectProtection, selectedProtections = [], onProtectionsLoaded }) => {
+const BuyerProtectionSection = ({
+  productId,
+  productPrice,
+  onSelectProtection,
+  selectedProtections = [],
+  onProtectionsLoaded,
+  compact = false,
+}) => {
   const [protections, setProtections] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (productId && productPrice) {
+    if (productId && productPrice !== undefined && productPrice !== null) {
       fetchProtections()
     }
   }, [productId, productPrice])
@@ -18,7 +25,7 @@ const BuyerProtectionSection = ({ productId, productPrice, onSelectProtection, s
       console.log('Fetching protections for:', { productId, productPrice })
       const { data } = await axios.post(`${config.API_URL}/api/buyer-protection/for-product`, {
         productId,
-        productPrice,
+        productPrice: Number(productPrice),
       })
       console.log('Received protections:', data)
       setProtections(data)
@@ -97,9 +104,44 @@ const BuyerProtectionSection = ({ productId, productPrice, onSelectProtection, s
   }
 
   return (
-    <div className="space-y-3">
+    <div className={compact ? "space-y-2" : "space-y-3"}>
       {protections.map((protection) => {
         const isSelected = isProtectionSelected(protection._id)
+        if (compact) {
+          return (
+            <div
+              key={protection._id}
+              onClick={() => handleProtectionToggle(protection)}
+              className={`
+                relative border rounded-lg p-2 cursor-pointer transition-all duration-200
+                ${
+                  isSelected
+                    ? "border-blue-500 bg-blue-50 shadow-sm"
+                    : "border-gray-200 hover:border-blue-300 bg-white"
+                }
+              `}
+            >
+              <div className="flex items-center gap-2">
+                <div className={`p-2 rounded-md ${getIconColor(protection.type)} flex-shrink-0`}>
+                  <Shield size={16} className={getIconTextColor(protection.type)} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">{protection.duration}</p>
+                  <h4 className="truncate text-xs font-semibold text-gray-900">{protection.name}</h4>
+                  <p className="text-sm font-bold text-gray-900">
+                    AED {((protection.calculatedPrice !== undefined ? protection.calculatedPrice : protection.price) || 0).toFixed(2)}
+                  </p>
+                </div>
+                {isSelected && (
+                  <div className="rounded-full bg-blue-500 p-1">
+                    <Check size={12} className="text-white" />
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        }
+
         return (
           <div
             key={protection._id}

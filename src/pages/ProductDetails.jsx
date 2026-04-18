@@ -135,6 +135,11 @@ const ProductDetails = () => {
   const [hasProtectionPlans, setHasProtectionPlans] = useState(false)
   const screenshotLayoutMode = true
 
+  useEffect(() => {
+    setSelectedProtections([])
+    setHasProtectionPlans(false)
+  }, [product?._id])
+
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -2814,7 +2819,7 @@ const ProductDetails = () => {
 
                   return (
                     <>
-                      <div className="mb-2 flex flex-wrap items-center justify-between gap-3">
+                      <div className="mb-2 flex flex-wrap items-start justify-between gap-3">
                         <div className="flex items-center gap-3">
                           <div className="text-3xl font-bold text-slate-900">{formatPrice(priceToShow)}</div>
                           {hasValidOffer && (
@@ -3293,6 +3298,22 @@ const ProductDetails = () => {
                     <TranslatedText>Request a Callback</TranslatedText>
                   </button>
                 </div>
+
+                {hasProtectionPlans && (
+                  <div className="mt-3 rounded-xl border border-[#d7ddd4] bg-[#f8faf7] p-2">
+                    <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#505e4d]">
+                      <Shield size={14} />
+                      <TranslatedText>Protect Your Purchase</TranslatedText>
+                    </div>
+                    <BuyerProtectionSection
+                      productId={product._id}
+                      productPrice={getEffectivePrice()}
+                      onSelectProtection={setSelectedProtections}
+                      selectedProtections={selectedProtections}
+                      compact
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -3388,32 +3409,11 @@ const ProductDetails = () => {
               </div>
 
   
-
-
-
-{/* Protect Your Purchase - Only show if protection plans are available */}
-{!screenshotLayoutMode && hasProtectionPlans && (
-<div className="mt-8 border-t border-[#d7ddd4] pt-5">
-            <div className="p-1">
-              <h3 className="font-bold text-gray-900 text-lg mb-4 flex items-center gap-2">
-                <Shield className="text-[#505e4d]" size={24} />
-                <TranslatedText>Protect Your Purchase</TranslatedText>
-              </h3>
-              <BuyerProtectionSection
-                productId={product._id}
-                productPrice={product.salePrice || product.price}
-                onSelectProtection={setSelectedProtections}
-                selectedProtections={selectedProtections}
-              />
-            </div>
-          </div>
-)}
-
 {/* Hidden loader to check for protection plans availability */}
-{!screenshotLayoutMode && !hasProtectionPlans && (
+{!hasProtectionPlans && (
   <BuyerProtectionSection
     productId={product._id}
-    productPrice={product.salePrice || product.price}
+    productPrice={getEffectivePrice()}
     onSelectProtection={setSelectedProtections}
     selectedProtections={selectedProtections}
     onProtectionsLoaded={setHasProtectionPlans}
