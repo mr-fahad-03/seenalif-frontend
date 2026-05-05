@@ -538,8 +538,8 @@ const Cart = () => {
       {cartItems.length === 0 ? (
         <div className="text-center py-12">
           <ShoppingBag size={64} className="mx-auto text-gray-300 mb-4" />
-          <h2 className="text-xl font-medium text-gray-900 mb-2"><TranslatedText>Your cart is empty</TranslatedText></h2>
-          <p className="text-gray-600 mb-6"><TranslatedText>Looks like you haven't added any items to your cart yet.</TranslatedText></p>
+          <h2 className="text-xl font-medium text-gray-900 mb-2"><TranslatedText>Your Drey is empty</TranslatedText></h2>
+          <p className="text-gray-600 mb-6"><TranslatedText>Looks like you haven't added any items to your drey yet.</TranslatedText></p>
           <Link to={getLocalizedPath("/")} className="btn-primary">
             <TranslatedText>Continue Shopping</TranslatedText>
           </Link>

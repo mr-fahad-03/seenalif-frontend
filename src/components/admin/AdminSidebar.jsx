@@ -657,7 +657,7 @@ const AdminSidebar = () => {
     <div className="w-64 bg-white shadow-lg h-screen overflow-y-auto fixed left-0 top-0 z-50 flex flex-col">
       <div className="p-6 border-b flex-shrink-0">
         <Link to="/admin/dashboard" className="flex items-center space-x-2">
-          <img src="/seenalif (1).png" alt="Seen Alif" className="h-11 w-auto object-contain" />
+          <img src="/seenalif.webp" alt="Seen Alif" className="h-11 w-auto object-contain" />
         </Link>
       </div>
 

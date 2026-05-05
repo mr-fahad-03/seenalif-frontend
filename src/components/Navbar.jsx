@@ -1090,7 +1090,7 @@ const Navbar = () => {
                     </span>
                   )}
                 </span>
-                <span className="mt-1">My Cart</span>
+                <span className="mt-1">My Drey</span>
               </Link>
 
               <div className="relative px-4 border-l border-gray-200">
