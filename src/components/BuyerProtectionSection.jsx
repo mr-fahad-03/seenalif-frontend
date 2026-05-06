@@ -103,45 +103,93 @@ const BuyerProtectionSection = ({
     return null
   }
 
-  return (
-    <div className={compact ? "space-y-2" : "space-y-3"}>
-      {protections.map((protection) => {
-        const isSelected = isProtectionSelected(protection._id)
-        if (compact) {
-          return (
-            <div
-              key={protection._id}
-              onClick={() => handleProtectionToggle(protection)}
-              className={`
-                relative border rounded-lg p-2 cursor-pointer transition-all duration-200
-                ${
-                  isSelected
-                    ? "border-blue-500 bg-blue-50 shadow-sm"
-                    : "border-gray-200 hover:border-blue-300 bg-white"
-                }
-              `}
-            >
-              <div className="flex items-center gap-2">
-                <div className={`p-2 rounded-md ${getIconColor(protection.type)} flex-shrink-0`}>
-                  <Shield size={16} className={getIconTextColor(protection.type)} />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">{protection.duration}</p>
-                  <h4 className="truncate text-xs font-semibold text-gray-900">{protection.name}</h4>
-                  <p className="text-sm font-bold text-gray-900">
-                    AED {((protection.calculatedPrice !== undefined ? protection.calculatedPrice : protection.price) || 0).toFixed(2)}
-                  </p>
-                </div>
-                {isSelected && (
-                  <div className="rounded-full bg-blue-500 p-1">
-                    <Check size={12} className="text-white" />
-                  </div>
-                )}
-              </div>
-            </div>
-          )
-        }
+  const protectionOrder = {
+    accidental_extended: 0,
+    warranty: 1,
+    damage_protection: 2,
+  }
 
+  const protectionTypeColumns = [
+    { type: "accidental_extended", title: "Accidental & Extended Warranty" },
+    { type: "warranty", title: "Extended Warranty" },
+    { type: "damage_protection", title: "Damage Protection" },
+  ]
+
+  const orderedProtections = [...protections].sort((a, b) => {
+    const aOrder = protectionOrder[a.type] ?? 99
+    const bOrder = protectionOrder[b.type] ?? 99
+    return aOrder - bOrder
+  })
+
+  if (compact) {
+    const groupedProtections = protectionTypeColumns
+      .map((column) => ({
+        ...column,
+        items: orderedProtections.filter((protection) => protection.type === column.type),
+      }))
+      .filter((column) => column.items.length > 0)
+
+    const compactColumnsClass =
+      groupedProtections.length === 1
+        ? "md:grid-cols-1"
+        : groupedProtections.length === 2
+          ? "md:grid-cols-2"
+          : "md:grid-cols-3"
+
+    return (
+      <div className={`grid grid-cols-1 gap-2 md:items-stretch ${compactColumnsClass}`}>
+        {groupedProtections.map((column) => (
+          <div key={column.type} className="h-full rounded-lg border border-[#d7ddd4] bg-white p-2">
+            <p className="mb-2 px-1 text-[10px] font-bold uppercase tracking-wide text-[#505e4d]">
+              {column.title}
+            </p>
+            <div className="space-y-2">
+              {column.items.map((protection) => {
+                const isSelected = isProtectionSelected(protection._id)
+                return (
+                  <div
+                    key={protection._id}
+                    onClick={() => handleProtectionToggle(protection)}
+                    className={`
+                      relative h-full border rounded-lg p-2 cursor-pointer transition-all duration-200
+                      ${
+                        isSelected
+                          ? "border-blue-500 bg-blue-50 shadow-sm"
+                          : "border-[#e1e6de] hover:border-blue-300 bg-white"
+                      }
+                    `}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className={`p-2 rounded-md ${getIconColor(protection.type)} flex-shrink-0`}>
+                        <Shield size={16} className={getIconTextColor(protection.type)} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">{protection.duration}</p>
+                        <h4 className="truncate text-xs font-semibold text-gray-900">{protection.name}</h4>
+                        <p className="text-sm font-bold text-gray-900">
+                          AED {((protection.calculatedPrice !== undefined ? protection.calculatedPrice : protection.price) || 0).toFixed(2)}
+                        </p>
+                      </div>
+                      {isSelected && (
+                        <div className="rounded-full bg-blue-500 p-1">
+                          <Check size={12} className="text-white" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-3">
+      {orderedProtections.map((protection) => {
+        const isSelected = isProtectionSelected(protection._id)
         return (
           <div
             key={protection._id}
