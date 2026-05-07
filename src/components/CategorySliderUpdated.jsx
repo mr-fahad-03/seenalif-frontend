@@ -469,6 +469,9 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
 
                 const layoutClasses = getLayoutClasses();
                 const textClassesWithDesktopSpacing = `${layoutClasses.textClass} lg:px-3 xl:px-4`;
+                const imageHoverClasses = "transition-all duration-300 ease-out group-hover:scale-90 group-hover:rounded-full";
+                const borderSvgClasses = "pointer-events-none absolute inset-0 h-full w-full";
+                const borderPathClasses = "fill-none [stroke:#0e0e0e] [stroke-opacity:0.45] [stroke-width:1.2] [stroke-linecap:round] [stroke-dasharray:100] [stroke-dashoffset:100] transition-[stroke-dashoffset] duration-500 ease-out group-hover:[stroke-dashoffset:0]";
 
                 return (
                   <button
@@ -486,7 +489,7 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                     {layoutClasses.isCircularCard ? (
                       <>
                         <div
-                          className={`${layoutClasses.cardWrapper} ${layoutClasses.cardSize}`}
+                          className={`${layoutClasses.cardWrapper} ${layoutClasses.cardSize} relative transition-all duration-300 ease-out`}
                           style={{ 
                             willChange: 'transform', 
                             transform: 'translateZ(0)',
@@ -501,13 +504,25 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                               height="176"
                               loading="lazy"
                               decoding="async"
-                              className={layoutClasses.imageSize}
+                              className={`${layoutClasses.imageSize} ${imageHoverClasses}`}
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center bg-gray-100">
                               <span className="text-2xl md:text-3xl">📦</span>
                             </div>
                           )}
+                          <svg viewBox="0 0 100 100" className={borderSvgClasses} aria-hidden="true">
+                            <path
+                              d="M 50 98 A 48 48 0 0 0 50 2"
+                              pathLength="100"
+                              className={borderPathClasses}
+                            />
+                            <path
+                              d="M 50 98 A 48 48 0 0 1 50 2"
+                              pathLength="100"
+                              className={borderPathClasses}
+                            />
+                          </svg>
                         </div>
                         <span className={textClassesWithDesktopSpacing}>
                           {(() => {
@@ -526,7 +541,8 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                           className={`flex items-center justify-center w-full ${layoutClasses.imageWrapper || ''}`}
                           style={{ willChange: 'transform', transform: 'translateZ(0)' }}
                         >
-                          {item.image ? (
+                          <div className="relative inline-flex">
+                            {item.image ? (
                             <img
                               src={getOptimizedImageUrl(item.image, { width: 128, height: 128, quality: 68 })}
                               alt={item.name}
@@ -534,17 +550,30 @@ const CategorySliderUpdated = ({ onCategoryClick }) => {
                               height="176"
                               loading="lazy"
                               decoding="async"
-                              className={`${layoutClasses.imageSize} ${sliderShape === 'circle' ? 'object-cover' : 'bg-cover'}`}
+                              className={`${layoutClasses.imageSize} ${sliderShape === 'circle' ? 'object-cover' : 'bg-cover'} ${imageHoverClasses}`}
                               style={{...getShapeStyle(), display: 'block'}}
                             />
                           ) : (
                             <div 
-                              className={`${layoutClasses.imageSize} border-2 border-gray-200 flex items-center justify-center bg-gray-100`}
+                              className={`${layoutClasses.imageSize} border-2 border-gray-200 flex items-center justify-center bg-gray-100 ${imageHoverClasses}`}
                               style={{...getShapeStyle(), display: 'flex'}}
                             >
                               <span className="text-lg md:text-2xl">📦</span>
                             </div>
-                          )}
+                            )}
+                            <svg viewBox="0 0 100 100" className={borderSvgClasses} aria-hidden="true">
+                              <path
+                                d="M 50 98 A 48 48 0 0 0 50 2"
+                                pathLength="100"
+                                className={borderPathClasses}
+                              />
+                              <path
+                                d="M 50 98 A 48 48 0 0 1 50 2"
+                                pathLength="100"
+                                className={borderPathClasses}
+                              />
+                            </svg>
+                          </div>
                         </div>
 
                         <span className={textClassesWithDesktopSpacing}>
