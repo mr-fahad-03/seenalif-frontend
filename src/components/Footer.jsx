@@ -164,7 +164,7 @@ const Footer = ({ className = "" }) => {
       <section className="hidden md:block bg-[#505e4d] border-t border-white/20">
         <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-3 lg:gap-6 xl:gap-8 px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-5">
           <div className="flex-1 min-w-0 text-center lg:text-left">
-            <p className="text-sm font-semibold text-white whitespace-nowrap">2025 Powered By Super Boss Trading LLC</p>
+            <p className="text-sm font-semibold text-white whitespace-nowrap">2025 Powered By Super Boss Computers Trading LLC</p>
           </div>
 
           <div className="flex-1 flex justify-center min-w-0">
