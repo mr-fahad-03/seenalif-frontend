@@ -134,6 +134,7 @@ const ProductDetails = () => {
   const [selectedProtections, setSelectedProtections] = useState([])
   const [hasProtectionPlans, setHasProtectionPlans] = useState(false)
   const screenshotLayoutMode = true
+  const showVariationSelectors = true
 
   useEffect(() => {
     setSelectedProtections([])
@@ -2784,22 +2785,29 @@ const ProductDetails = () => {
               <div className="mb-3">
                 {(() => {
                   const currentColor = getCurrentColor()
-                  let basePrice = 0
-                  let offerPrice = 0
+                  const currentDos = getCurrentDos()
                   
-                  if (currentColor) {
-                    basePrice = Number(currentColor.price) || 0
-                    offerPrice = Number(currentColor.offerPrice) || 0
-                  } else {
-                    basePrice = Number(product.price) || 0
-                    offerPrice = Number(product.offerPrice) || 0
-                  }
+                  const productRegularPrice = Number(product.price) || 0
+                  const productOfferPrice = Number(product.offerPrice) || 0
+                  const colorRegularPrice = currentColor ? Number(currentColor.price) || 0 : productRegularPrice
+                  const colorOfferPrice = currentColor ? Number(currentColor.offerPrice) || 0 : productOfferPrice
+                  const dosRegularPrice = currentDos ? Number(currentDos.price) || 0 : 0
+                  const dosOfferPrice = currentDos ? Number(currentDos.offerPrice) || 0 : 0
+                  const basePrice = colorRegularPrice + dosRegularPrice
+                  const offerPrice =
+                    (colorOfferPrice > 0 && colorOfferPrice < colorRegularPrice ? colorOfferPrice : colorRegularPrice) +
+                    (currentDos && dosOfferPrice > 0 && dosOfferPrice < dosRegularPrice ? dosOfferPrice : dosRegularPrice)
                   
-                  const hasValidOffer = offerPrice > 0 && basePrice > 0 && offerPrice < basePrice
                   const priceToShow = getEffectivePrice()
+                  const hasValidOffer = basePrice > 0 && priceToShow > 0 && priceToShow < basePrice
                   const discount = hasValidOffer ? Math.round(((basePrice - offerPrice) / basePrice) * 100) : 0
+                  const selectedVariationOutOfStock =
+                    (currentColor && Number(currentColor.countInStock) <= 0) ||
+                    (currentDos && Number(currentDos.countInStock) <= 0)
                   const stockLabel =
-                    product.stockStatus === "In Stock" ? (
+                    selectedVariationOutOfStock ? (
+                      <TranslatedText>Selected option is out of stock</TranslatedText>
+                    ) : product.stockStatus === "In Stock" ? (
                       <TranslatedText sourceDoc={product} fieldName="stockStatus">Available in stock</TranslatedText>
                     ) : product.stockStatus === "Out of Stock" ? (
                       <TranslatedText sourceDoc={product} fieldName="stockStatus">Currently out of stock</TranslatedText>
@@ -2809,7 +2817,9 @@ const ProductDetails = () => {
                       <TranslatedText sourceDoc={product} fieldName="stockStatus">Stock status updates at checkout</TranslatedText>
                     )
                   const stockBadgeClass =
-                    product.stockStatus === "In Stock"
+                    selectedVariationOutOfStock
+                      ? "bg-[#fdecec] text-[#b42318]"
+                      : product.stockStatus === "In Stock"
                       ? "bg-[#e7f7ee] text-[#1f7a45]"
                       : product.stockStatus === "Out of Stock"
                         ? "bg-[#fdecec] text-[#b42318]"
@@ -2845,18 +2855,15 @@ const ProductDetails = () => {
           
 
               {/* Color Variations */}
-              {!screenshotLayoutMode && product.colorVariations && product.colorVariations.length > 0 && (
+              {showVariationSelectors && product.colorVariations && product.colorVariations.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="mb-3 flex items-center font-bold text-slate-900">
-                    <span className="mr-2 text-[#505e4d]"></span>
-                    <TranslatedText>Color</TranslatedText>: {selectedColorIndex !== null && product.colorVariations[selectedColorIndex]?.color ? <TranslatedText text={product.colorVariations[selectedColorIndex].color}>{product.colorVariations[selectedColorIndex].color}</TranslatedText> : <TranslatedText>Select Color</TranslatedText>}
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  <div className="flex flex-wrap gap-3">
                     {product.colorVariations
-                      .filter(colorVar => colorVar.color)
-                      .map((colorVar, index) => {
+                      .map((colorVar, index) => ({ colorVar, index }))
+                      .filter(({ colorVar }) => colorVar.color)
+                      .map(({ colorVar, index }) => {
                         const isSelected = index === selectedColorIndex
-                        const colorPrice = colorVar.offerPrice > 0 ? colorVar.offerPrice : colorVar.price
+                        const isOutOfStock = Number(colorVar.countInStock) <= 0
                         
                         return (
                           <button
@@ -2867,71 +2874,33 @@ const ProductDetails = () => {
                               setSelectedColorIndex(isSelected ? null : index)
                               setSelectedImage(0)
                             }}
-                            className={`relative rounded-lg border px-3 py-3 transition-colors ${
+                            className={`relative inline-flex min-h-[38px] min-w-[72px] max-w-full items-center justify-center rounded-lg border px-4 py-2 text-sm font-medium transition-colors sm:max-w-[220px] ${
                               isSelected 
-                                ? 'border-[#505e4d] bg-[#edf1eb]' 
-                                : 'border-[#d4dbd0] hover:border-[#95a08f]'
-                            }`}
+                                ? 'border-[#5ba0ff] bg-[#dcecff] text-[#173f76]' 
+                                : 'border-[#bfc8d2] bg-white text-slate-800 hover:border-[#5ba0ff] hover:text-[#173f76]'
+                            } ${isOutOfStock ? 'opacity-60' : ''}`}
+                            title={isOutOfStock ? `${colorVar.color} - Out of Stock` : colorVar.color}
                           >
-                            {/* Product Image */}
-                            <div className="aspect-square mb-2 bg-white rounded-md overflow-hidden">
-                              <img
-                                src={getFullImageUrl(colorVar.image) || "/placeholder.svg"}
-                                alt={colorVar.color}
-                                className="w-full h-full object-contain"
-                              />
-                            </div>
-                            
-                            {/* Color Name */}
-                            <p className={`mb-1 text-center text-xs font-semibold ${
-                              isSelected ? 'text-[#505e4d]' : 'text-slate-700'
-                            }`}>
+                            <span className="truncate">
                               {colorVar.color}
-                            </p>
-                            
-                            {/* Price */}
-                            <p className="text-sm font-bold text-center text-gray-900">
-                              {formatPrice(colorPrice)}
-                            </p>
-                            
-                            {/* Current Selection Indicator */}
-                            {isSelected && (
-                              <div className="absolute right-1 top-1 rounded-full bg-[#505e4d] p-1 text-white">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                              </div>
-                            )}
-                            
-                            {/* Stock Badge */}
-                            {colorVar.countInStock <= 0 && (
-                              <div className="absolute bottom-2 left-2 right-2 rounded bg-[#edf1eb] px-2 py-1 text-center text-xs text-[#505e4d]">
-                                Out of Stock
-                              </div>
-                            )}
+                            </span>
                           </button>
                         )
                       })}
                   </div>
-                  <p className="text-xs text-gray-600 mt-3">
-                    Select a color to view its image and price
-                  </p>
                 </div>
               )}
 
               {/* DOS/Windows Variations */}
-              {!screenshotLayoutMode && product.dosVariations && product.dosVariations.length > 0 && (
+              {showVariationSelectors && product.dosVariations && product.dosVariations.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="font-bold text-gray-900 mb-3 flex items-center">
-                    <span className="text-[#505e4d] mr-2">OS</span>
-                    Windows: {selectedDosIndex !== null && product.dosVariations[selectedDosIndex]?.dosType ? product.dosVariations[selectedDosIndex].dosType : "Select Option"}
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  <div className="flex flex-wrap gap-3">
                     {product.dosVariations
-                      .filter(dosVar => dosVar.dosType)
-                      .map((dosVar, index) => {
+                      .map((dosVar, index) => ({ dosVar, index }))
+                      .filter(({ dosVar }) => dosVar.dosType)
+                      .map(({ dosVar, index }) => {
                         const isSelected = index === selectedDosIndex
-                        const dosPrice = dosVar.offerPrice > 0 ? dosVar.offerPrice : dosVar.price
+                        const isOutOfStock = Number(dosVar.countInStock) <= 0
                         
                         return (
                           <button
@@ -2942,101 +2911,69 @@ const ProductDetails = () => {
                               setSelectedDosIndex(isSelected ? null : index)
                               setSelectedImage(0)
                             }}
-                            className={`relative rounded-lg border px-3 py-3 transition-colors ${
+                            className={`relative inline-flex min-h-[38px] min-w-[92px] max-w-full items-center justify-center rounded-lg border px-4 py-2 text-sm font-medium transition-colors sm:max-w-[240px] ${
                               isSelected 
-                                ? 'border-[#505e4d] bg-[#edf1eb]' 
-                                : 'border-[#d4dbd0] hover:border-[#95a08f]'
-                            }`}
+                                ? 'border-[#5ba0ff] bg-[#dcecff] text-[#173f76]' 
+                                : 'border-[#bfc8d2] bg-white text-slate-800 hover:border-[#5ba0ff] hover:text-[#173f76]'
+                            } ${isOutOfStock ? 'opacity-60' : ''}`}
+                            title={isOutOfStock ? `${dosVar.dosType} - Out of Stock` : dosVar.dosType}
                           >
-                            {/* Product Image */}
-                           
-                            
-                            {/* OS Type Name */}
-                            <p className={`mb-1 text-center text-xs font-semibold ${
-                              isSelected ? 'text-[#505e4d]' : 'text-slate-700'
-                            }`}>
+                            <span className="truncate">
                               {dosVar.dosType}
-                            </p>
-                            
-                            {/* Price */}
-                            <p className="text-sm font-bold text-center text-gray-900">
-                              {formatPrice(dosPrice)}
-                            </p>
-                            
-                            {/* Current Selection Indicator */}
-                            {isSelected && (
-                              <div className="absolute right-1 top-1 rounded-full bg-[#505e4d] p-1 text-white">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                </svg>
-                              </div>
-                            )}
-                            
-                            {/* Stock Badge */}
-                            {dosVar.countInStock <= 0 && (
-                              <div className="absolute bottom-2 left-2 right-2 rounded bg-[#edf1eb] px-2 py-1 text-center text-xs text-[#505e4d]">
-                                Out of Stock
-                              </div>
-                            )}
+                            </span>
                           </button>
                         )
                       })}
                   </div>
-                  <p className="text-xs text-gray-600 mt-3">
-                    Select an OS option to view its image and price
-                  </p>
                 </div>
               )}
 
               {/* Product Variations */}
-              {!screenshotLayoutMode && product.variations && product.variations.length > 0 && (
+              {showVariationSelectors && product.variations && product.variations.length > 0 && (
                 <div className="mb-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center">
                     <span className="text-[#505e4d] mr-2"></span>
                    <TranslatedText>Available Options</TranslatedText>:
                   </h3>
-                  <div className="flex flex-wrap gap-3 ">
+                  <div className="flex flex-wrap gap-3">
                     {/* Combine current product and all variations, then sort alphabetically */}
                     {(() => {
                       // Build array of all variations including current product
                       const allVariations = []
                       
-                      // Add current product if it has selfVariationText (or fallback to reverseVariationText)
-                      const currentProductText = product.selfVariationText || product.reverseVariationText
-                      if (currentProductText) {
-                        allVariations.push({
-                          id: product._id,
-                          text: currentProductText,
-                          slug: product.slug,
-                          isCurrent: true
-                        })
+                      const getProductVariationLabel = (variationProduct, variation = {}) => {
+                        if (variationProduct && typeof variationProduct === "object") {
+                          return (
+                            variationProduct.selfVariationText ||
+                            variationProduct.reverseVariationText ||
+                            variation.variationText ||
+                            variationProduct.sku ||
+                            "View option"
+                          )
+                        }
+
+                        return variation.variationText || "View option"
                       }
                       
                       // Add other variations - use their selfVariationText, fallback to variationText
                       product.variations
-                        .filter(variation => {
-                          const varProduct = variation.product
-                          if (!varProduct) return false
-                          // Get the text: prefer selfVariationText from the product, fallback to variationText
-                          const varText = (typeof varProduct === 'object' && (varProduct.selfVariationText || varProduct.reverseVariationText)) 
-                            || variation.variationText 
-                            || ""
-                          return varText.trim() !== ""
-                        })
+                        .filter(variation => variation.product)
                         .forEach(variation => {
                           const varProduct = variation.product
                           const varId = typeof varProduct === 'object' ? varProduct._id : varProduct
                           const varSlug = typeof varProduct === 'object' ? varProduct.slug : null
-                          // Get the text: prefer selfVariationText from the product, fallback to variationText
-                          const varText = (typeof varProduct === 'object' && (varProduct.selfVariationText || varProduct.reverseVariationText)) 
-                            || variation.variationText 
-                            || ""
+                          const varText = getProductVariationLabel(varProduct, variation)
                           
                           allVariations.push({
                             id: varId,
                             text: varText,
                             slug: varSlug || varId,
-                            isCurrent: false
+                            isCurrent: false,
+                            sourceDoc: typeof varProduct === "object" ? varProduct : variation,
+                            fieldName:
+                              typeof varProduct === "object" && (varProduct.selfVariationText || varProduct.reverseVariationText)
+                                ? "selfVariationText"
+                                : "variationText",
                           })
                         })
                       
@@ -3051,34 +2988,24 @@ const ProductDetails = () => {
 
                         return (
                           <div key={variation.id} className="relative">
-                            {variation.isCurrent ? (
-                              <div className="cursor-default rounded-md border border-[#8d9987] bg-[#edf1eb] px-4 py-2 text-sm font-medium text-[#505e4d]">
+                            <Link
+                              to={getLocalizedPath(`/product/${encodeURIComponent(variation.slug)}`)}
+                              className="inline-flex min-h-[38px] max-w-full items-center justify-center rounded-lg border border-[#bfc8d2] bg-white px-4 py-2 text-sm font-medium text-slate-800 transition-colors hover:border-[#5ba0ff] hover:text-[#173f76] sm:max-w-[300px]"
+                              title={variation.text}
+                            >
+                              <span className="truncate">
                                 <TranslatedText 
                                   text={variation.text} 
-                                  sourceDoc={product} 
-                                  fieldName="selfVariationText" 
+                                  sourceDoc={variation.sourceDoc || matchingVar} 
+                                  fieldName={variation.fieldName} 
                                 />
-                              </div>
-                            ) : (
-                              <Link
-                                to={getLocalizedPath(`/product/${encodeURIComponent(variation.slug)}`)}
-                                className="block rounded-md border border-[#d4dbd0] px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-[#505e4d] hover:text-[#505e4d]"
-                              >
-                                <TranslatedText 
-                                  text={variation.text} 
-                                  sourceDoc={matchingVar} 
-                                  fieldName="variationText" 
-                                />
-                              </Link>
-                            )}
+                              </span>
+                            </Link>
                           </div>
                         )
                       })
                     })()}
                   </div>
-                  <p className="text-xs text-gray-600 mt-3">
-                    <TranslatedText>Click on any variation to view its details</TranslatedText>
-                  </p>
                 </div>
               )}
 
