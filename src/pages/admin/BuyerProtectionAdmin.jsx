@@ -43,13 +43,36 @@ const BuyerProtectionAdmin = () => {
     isActive: true,
     sortOrder: 0,
   })
-
-  const protectionTypes = [
+  const [protectionTypes, setProtectionTypes] = useState([
     { value: "warranty", label: "Extended Warranty" },
     { value: "damage_protection", label: "Damage Protection" },
     { value: "accidental_extended", label: "Accidental & Extended Warranty" },
-  ]
+    { value: "additional", label: "Additional" },
+    { value: "get_support", label: "Get Support" },
+    { value: "get_extra_support", label: "Get Extra support" },
+  ])
 
+  const [showCustomTypeInput, setShowCustomTypeInput] = useState(false)
+  const [customTypeName, setCustomTypeName] = useState("")
+
+  useEffect(() => {
+    if (protections && protections.length > 0) {
+      const existingTypes = Array.from(new Set(protections.map((p) => p.type))).filter(Boolean)
+      setProtectionTypes((prev) => {
+        const updated = [...prev]
+        existingTypes.forEach((t) => {
+          if (!updated.some((item) => item.value === t)) {
+            const label = t
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ")
+            updated.push({ value: t, label })
+          }
+        })
+        return updated
+      })
+    }
+  }, [protections])
   useEffect(() => {
     fetchProtections()
     fetchCategories()
@@ -103,10 +126,41 @@ const BuyerProtectionAdmin = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target
+    if (name === "type" && value === "add_new_type") {
+      setShowCustomTypeInput(true)
+      return
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }))
+  }
+
+  const handleSaveCustomType = () => {
+    const trimmed = customTypeName.trim()
+    if (!trimmed) {
+      showToast("Custom type name cannot be empty", "error")
+      return
+    }
+
+    // Generate value (e.g. lowercase and spaces to underscores)
+    const value = trimmed.toLowerCase().replace(/\s+/g, "_")
+    
+    // Check if it already exists
+    setProtectionTypes((prev) => {
+      const exists = prev.some((item) => item.value === value)
+      if (exists) {
+        return prev
+      }
+      return [...prev, { value, label: trimmed }]
+    })
+
+    setFormData((prev) => ({
+      ...prev,
+      type: value,
+    }))
+    setShowCustomTypeInput(false)
+    setCustomTypeName("")
   }
 
   const handleFeatureChange = (index, value) => {
@@ -198,6 +252,11 @@ const BuyerProtectionAdmin = () => {
       const filteredFeatures = formData.features.filter((f) => f.trim() !== "")
 
       // Validation
+      if (formData.type === "add_new_type") {
+        showToast("Please enter and add your custom type first", "error")
+        return
+      }
+
       if (formData.pricingType === "percentage") {
         const percentValue = parseFloat(formData.pricePercentage)
         if (!formData.pricePercentage || isNaN(percentValue) || percentValue < 0 || percentValue > 100) {
@@ -323,6 +382,8 @@ const BuyerProtectionAdmin = () => {
     setShowModal(false)
     setProductSearchTerm("")
     setShowProductSearch(false)
+    setShowCustomTypeInput(false)
+    setCustomTypeName("")
   }
 
   const getTypeColor = (type) => {
@@ -333,8 +394,27 @@ const BuyerProtectionAdmin = () => {
         return "bg-yellow-100 text-yellow-800"
       case "accidental_extended":
         return "bg-blue-100 text-blue-800"
+      case "additional":
+        return "bg-purple-100 text-purple-800"
+      case "get_support":
+        return "bg-teal-100 text-teal-800"
+      case "get_extra_support":
+        return "bg-rose-100 text-rose-800"
       default:
-        return "bg-gray-100 text-gray-800"
+        const colors = [
+          "bg-indigo-100 text-indigo-800",
+          "bg-pink-100 text-pink-800",
+          "bg-emerald-100 text-emerald-800",
+          "bg-amber-100 text-amber-800",
+          "bg-cyan-100 text-cyan-800",
+          "bg-violet-100 text-violet-800",
+        ]
+        if (!type) return "bg-gray-100 text-gray-800"
+        let sum = 0
+        for (let i = 0; i < type.length; i++) {
+          sum += type.charCodeAt(i)
+        }
+        return colors[sum % colors.length]
     }
   }
 
@@ -632,7 +712,45 @@ const BuyerProtectionAdmin = () => {
                           {type.label}
                         </option>
                       ))}
+                      <option value="add_new_type" className="text-blue-600 font-semibold bg-blue-50">
+                        + Add Custom Type...
+                      </option>
                     </select>
+
+                    {showCustomTypeInput && (
+                      <div className="mt-2 p-3 bg-blue-50 rounded-lg border border-blue-200 space-y-2">
+                        <label className="block text-xs font-semibold text-blue-900">
+                          Enter Custom Type Name
+                        </label>
+                        <input
+                          type="text"
+                          value={customTypeName}
+                          onChange={(e) => setCustomTypeName(e.target.value)}
+                          placeholder="e.g., Platinum Support"
+                          className="w-full px-2 py-1 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                        <div className="flex gap-2 justify-end">
+                          <button
+                            type="button"
+                            onClick={handleSaveCustomType}
+                            className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 font-medium transition-colors whitespace-nowrap"
+                          >
+                            Add
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowCustomTypeInput(false)
+                              setCustomTypeName("")
+                              setFormData((prev) => ({ ...prev, type: editingProtection ? editingProtection.type : "warranty" }))
+                            }}
+                            className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-md hover:bg-gray-300 font-medium transition-colors whitespace-nowrap"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div>

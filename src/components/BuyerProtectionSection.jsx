@@ -66,8 +66,20 @@ const BuyerProtectionSection = ({
         return "bg-yellow-100"
       case "accidental_extended":
         return "bg-blue-100"
+      case "additional":
+        return "bg-purple-100"
+      case "get_support":
+        return "bg-teal-100"
+      case "get_extra_support":
+        return "bg-rose-100"
       default:
-        return "bg-gray-100"
+        const colors = ["bg-indigo-100", "bg-pink-100", "bg-emerald-100", "bg-amber-100", "bg-cyan-100", "bg-violet-100"]
+        if (!type) return "bg-gray-100"
+        let sum = 0
+        for (let i = 0; i < type.length; i++) {
+          sum += type.charCodeAt(i)
+        }
+        return colors[sum % colors.length]
     }
   }
 
@@ -79,8 +91,20 @@ const BuyerProtectionSection = ({
         return "text-yellow-600"
       case "accidental_extended":
         return "text-blue-600"
+      case "additional":
+        return "text-purple-600"
+      case "get_support":
+        return "text-teal-600"
+      case "get_extra_support":
+        return "text-rose-600"
       default:
-        return "text-gray-600"
+        const colors = ["text-indigo-600", "text-pink-600", "text-emerald-600", "text-amber-600", "text-cyan-600", "text-violet-600"]
+        if (!type) return "text-gray-600"
+        let sum = 0
+        for (let i = 0; i < type.length; i++) {
+          sum += type.charCodeAt(i)
+        }
+        return colors[sum % colors.length]
     }
   }
 
@@ -107,13 +131,32 @@ const BuyerProtectionSection = ({
     accidental_extended: 0,
     warranty: 1,
     damage_protection: 2,
+    additional: 3,
+    get_support: 4,
+    get_extra_support: 5,
   }
 
-  const protectionTypeColumns = [
+  // Base predefined columns
+  const baseColumns = [
     { type: "accidental_extended", title: "Accidental & Extended Warranty" },
     { type: "warranty", title: "Extended Warranty" },
     { type: "damage_protection", title: "Damage Protection" },
+    { type: "additional", title: "Additional" },
+    { type: "get_support", title: "Get Support" },
+    { type: "get_extra_support", title: "Get Extra support" },
   ]
+
+  // Add any custom types from protections dynamically
+  const protectionTypeColumns = [...baseColumns]
+  protections.forEach((p) => {
+    if (p.type && !protectionTypeColumns.some((col) => col.type === p.type)) {
+      const title = p.type
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ")
+      protectionTypeColumns.push({ type: p.type, title })
+    }
+  })
 
   const orderedProtections = [...protections].sort((a, b) => {
     const aOrder = protectionOrder[a.type] ?? 99
