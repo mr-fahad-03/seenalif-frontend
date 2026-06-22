@@ -937,11 +937,36 @@ const ProductDetails = () => {
     navigate("/cart")
   }
 
+  const getMaxQuantity = () => {
+    if (!product) return 10;
+    
+    let currentStock = product.countInStock || Infinity;
+    const currentColor = getCurrentColor();
+    const currentDos = getCurrentDos();
+    
+    if (currentDos) {
+      currentStock = currentDos.countInStock ?? currentStock;
+    } else if (currentColor) {
+      currentStock = currentColor.countInStock ?? currentStock;
+    }
+    
+    let maxPurchase = 10;
+    if (product.maxPurchaseQty !== undefined && product.maxPurchaseQty !== null) {
+      const parsedMax = Number(product.maxPurchaseQty);
+      if (!isNaN(parsedMax) && parsedMax > 0) {
+        maxPurchase = parsedMax;
+      }
+    }
+    
+    return Math.min(maxPurchase, currentStock);
+  }
+
   const handleQuantityChange = (delta) => {
     setQuantity((prev) => {
       const newQuantity = prev + delta
       if (newQuantity < 1) return 1
-      if (newQuantity > (product.maxPurchaseQty || 10)) return product.maxPurchaseQty || 10
+      const maxAllowed = getMaxQuantity()
+      if (newQuantity > maxAllowed) return maxAllowed
       return newQuantity
     })
   }
@@ -3081,8 +3106,11 @@ const ProductDetails = () => {
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-stretch">
                   <div className="grid w-full grid-cols-3 overflow-hidden rounded-md border border-[#c9d1c4]">
                     <button
+                      type="button"
                       onClick={() => handleQuantityChange(-1)}
-                      className="flex items-center justify-center py-2 text-slate-600 transition-colors hover:text-[#505e4d]"
+                      className={`flex items-center justify-center py-2 transition-colors ${
+                        quantity <= 1 ? "text-gray-300 cursor-not-allowed" : "text-slate-600 hover:text-[#505e4d]"
+                      }`}
                       disabled={quantity <= 1}
                     >
                       <Minus size={16} />
@@ -3091,9 +3119,12 @@ const ProductDetails = () => {
                       {quantity}
                     </span>
                     <button
+                      type="button"
                       onClick={() => handleQuantityChange(1)}
-                      className="flex items-center justify-center py-2 text-slate-600 transition-colors hover:text-[#505e4d]"
-                      disabled={quantity >= (product.maxPurchaseQty || 10)}
+                      className={`flex items-center justify-center py-2 transition-colors ${
+                        quantity >= getMaxQuantity() ? "text-gray-300 cursor-not-allowed" : "text-slate-600 hover:text-[#505e4d]"
+                      }`}
+                      disabled={quantity >= getMaxQuantity()}
                     >
                       <Plus size={16} />
                     </button>
