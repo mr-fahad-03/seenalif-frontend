@@ -3,24 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-site-verification" content="gDHMgegtAvEL0xzDBjNjdXCy7OfBTQ5pvs8K9dPVvzQ" />
-    <meta name="google-site-verification" content="7L9SSyoDKttO_Mq86f7kYHZoCKnZ76rBW5tZZYyxg1Y" />
-    <link rel="icon" type="image/png" href="/logoa.png" />
+  <link rel="icon" type="image/png" href="/logoa.png" />
     <link rel="shortcut icon" type="image/png" href="/logoa.png" />
-    <link
+    <!-- <link
       rel="preload"
       as="image"
       href="https://api.grabatoz.ae/uploads//banners/banner-projector_final-1767447672755-684802807.webp"
       fetchpriority="high"
-    />
+    /> -->
     <title>Seenalif</title>
 
     <!-- GA/Ads are handled via GTM container to avoid duplicate gtag bootstrap -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="https://api.grabatoz.ae" />
-    <link rel="preconnect" href="https://api.grabatoz.ae" crossorigin />
+    <!-- <link rel="dns-prefetch" href="https://api.grabatoz.ae" />
+    <link rel="preconnect" href="https://api.grabatoz.ae" crossorigin /> -->
     <link
       rel="preload"
       as="style"
@@ -35,48 +33,7 @@
     </noscript>
 
     <!-- Defer non-critical third-party scripts to reduce early network/caching penalties -->
-    <script>
-      ;(function () {
-        var loaded = false
-
-        function appendScript(src, id) {
-          if (id && document.getElementById(id)) return document.getElementById(id)
-          var script = document.createElement("script")
-          script.async = true
-          script.src = src
-          if (id) script.id = id
-          document.head.appendChild(script)
-          return script
-        }
-
-        function loadThirdParty() {
-          if (loaded) return
-          loaded = true
-
-          // Microsoft Clarity
-         
-          // Google Customer Reviews Merchant Widget
-          var merchantScript = appendScript(
-            "https://www.gstatic.com/shopping/merchant/merchantwidget.js",
-            "merchantWidgetScript"
-          )
-          merchantScript.addEventListener("load", function () {
-            if (window.merchantwidget && typeof window.merchantwidget.start === "function") {
-              window.merchantwidget.start({
-                merchant_id: 5694261680,
-                position: "RIGHT_BOTTOM",
-                region: "AE",
-              })
-            }
-          })
-        }
-
-        // Load third-party trackers/widgets only after real user interaction.
-        ;["pointerdown", "keydown", "touchstart", "scroll"].forEach(function (eventName) {
-          window.addEventListener(eventName, loadThirdParty, { once: true, passive: true })
-        })
-      })()
-    </script>
+  
   </head>
   <body>
 
