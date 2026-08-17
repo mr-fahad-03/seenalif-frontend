@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 90" width="380" height="90">
+  <defs>
+    <style>
+      .bg-shield { fill: none; stroke: #0b663b; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .inner-shield { fill: none; stroke: #0b663b; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+      .text-boss { fill: #0b663b; font-family: 'Montserrat', 'Rajdhani', 'Arial Black', sans-serif; font-weight: 900; font-size: 32px; letter-spacing: 1.5px; }
+    </style>
+  </defs>
+
+  <!-- Shield Logo Group -->
+  <g transform="translate(10, 8)">
+    <!-- Outer Shield Shape -->
+    <path d="M 35 4 L 62 4 C 67 4, 70 8, 70 14 L 70 38 C 70 56, 52 68, 35 74 C 18 68, 0 56, 0 38 L 0 14 C 0 8, 3 4, 8 4 Z" fill="none" stroke="#0b663b" stroke-width="5" stroke-linejoin="round"/>
+    
+    <!-- Inner Shield Accent Line -->
+    <path d="M 35 10 L 56 10 C 60 10, 63 13, 63 18 L 63 36 C 63 50, 48 60, 35 66 C 22 60, 7 50, 7 36 L 7 18 C 7 13, 10 10, 14 10 Z" fill="none" stroke="#0b663b" stroke-width="2" opacity="0.6"/>
+    
+    <!-- Stylized S B Emblem -->
+    <!-- S Top Curve -->
+    <path d="M 48 22 C 48 18, 22 18, 22 28 C 22 38, 48 34, 48 44 C 48 54, 22 54, 22 50" fill="none" stroke="#0b663b" stroke-width="5" stroke-linecap="round"/>
+    <!-- B Vertical and Loops -->
+    <path d="M 24 20 L 24 56" fill="none" stroke="#0b663b" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 24 20 L 44 20 C 50 20, 50 33, 44 33 L 24 33" fill="none" stroke="#0b663b" stroke-width="4" stroke-linecap="round"/>
+    <path d="M 24 33 L 46 33 C 52 33, 52 48, 46 48 L 24 48" fill="none" stroke="#0b663b" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Super Boss Text -->
+  <text x="95" y="52" class="text-boss">SUPER BOSS</text>
+</svg>

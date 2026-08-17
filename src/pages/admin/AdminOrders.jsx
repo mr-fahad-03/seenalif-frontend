@@ -308,7 +308,7 @@ const AdminOrders = () => {
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
-            <img src="/g.png" alt="Loading..." style={{ width: 48, height: 48, ...bounceStyle }} />
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-lime-500"></div>
           </div>
         ) : (
           <div className="bg-white rounded-lg shadow-sm" style={{ overflow: 'visible' }}>

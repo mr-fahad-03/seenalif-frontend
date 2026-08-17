@@ -268,7 +268,7 @@ const BlogList = () => {
   if (loading && blogs.length === 0 && featuredBlogs.length === 0 && trendingBlogs.length === 0) {
     return (
       <div className="flex justify-center items-center h-96">
-        <img src="/g.png" alt="Loading..." style={{ width: 80, height: 80, ...bounceStyle }} />
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-lime-500 mx-auto"></div>
       </div>
     )
   }
