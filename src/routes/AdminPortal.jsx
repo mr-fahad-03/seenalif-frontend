@@ -189,6 +189,7 @@ const AdminPortal = () => {
             <Route path="gaming-zone-categories/edit/:id" element={<AddGamingZoneCategory />} />
             <Route path="delivery-charges" element={<AdminDeliveryCharges />} />
             <Route path="delivery-charges/add" element={<AddDeliveryCharge />} />
+            <Route path="delivery-charges/edit/:id" element={<AddDeliveryCharge />} />
             <Route path="settings" element={<AdminSettings />} />
 
             <Route path="blog-dashboard" element={<BlogDashboard />} />

@@ -47,20 +47,18 @@ const InvoiceComponent = forwardRef(({ order }, ref) => {
           </div>
 
           {/* Right Company Details */}
-          <div className="text-right text-black font-sans leading-tight">
-            <h1 className="text-base font-bold text-black tracking-tight uppercase">
+          <div className="text-left text-black font-sans leading-snug max-w-md">
+            <h1 className="text-sm font-bold text-black tracking-tight uppercase">
               SUPER BOSS COMPUTERS TRADING LLC
             </h1>
             <p className="text-xs font-bold text-black mt-0.5">
               Shop #11, Sultan Building, Nr Al Raffa St., BurDubai,
             </p>
-            <p className="text-xs font-bold text-black">
-              Dubai, 48051, UAE
-            </p>
+            <p className="text-xs font-bold text-black">Dubai, 48051, UAE</p>
             <p className="text-[11px] text-black mt-1">
-              Mobile: +971 4 3258808 Email: sales@superboss.ae https://www.superboss.ae
+              Mobile: +971 4 3258808, +971 50 4502681 Email: sales@superboss.ae https://www.superboss.ae
             </p>
-            <p className="text-xs font-bold text-black mt-1">
+            <p className="text-sm font-bold text-black mt-1">
               TRN: <span className="text-[#0b663b] font-extrabold">100581077300003</span>
             </p>
           </div>
@@ -70,7 +68,7 @@ const InvoiceComponent = forwardRef(({ order }, ref) => {
         <div className="flex justify-between items-end mt-4 pt-2 border-t border-gray-200">
           <div>
             <h2 className="text-xl font-extrabold text-black tracking-wide flex items-center gap-2">
-              VAT INVOICE <span className="text-sm font-semibold text-gray-700">عرض أسعار / فاتورة ضريبية</span>
+              VAT INVOICE <span className="text-sm font-semibold text-gray-700">فاتورة ضريبية</span>
             </h2>
           </div>
           <div className="text-right text-xs text-black">

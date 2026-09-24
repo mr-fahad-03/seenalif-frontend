@@ -226,23 +226,6 @@ const AdminOrders = () => {
     return () => document.removeEventListener("click", handleClickOutside)
   }, [])
 
-  const bounceStyle = {
-    animation: 'bounce 1s infinite',
-  }
-
-  const bounceKeyframes = `
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px); }
-  }
-  `
-  if (typeof document !== 'undefined' && !document.getElementById('bounce-keyframes')) {
-    const style = document.createElement('style')
-    style.id = 'bounce-keyframes'
-    style.innerHTML = bounceKeyframes
-    document.head.appendChild(style)
-  }
-
   return (
     <div className="min-h-screen bg-gray-100">
       <AdminSidebar />
