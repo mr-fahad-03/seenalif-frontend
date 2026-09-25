@@ -6,8 +6,6 @@ import { Link } from "react-router-dom"
 import { getFullImageUrl } from "../utils/imageUtils"
 import { useLanguage } from "../context/LanguageContext"
 
-const FALLBACK_BANNER_IMAGE =
-  "/placeholder.svg"
 
 const debugHeroBanners = (...args) => {
   if (import.meta?.env?.VITE_DEBUG_BANNERS === "true") {
@@ -15,7 +13,7 @@ const debugHeroBanners = (...args) => {
   }
 }
 
-const BannerSlider = ({ banners = [] }) => {
+const BannerSlider = ({ banners = [], loading = false }) => {
   const { getLocalizedPath } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
@@ -50,6 +48,9 @@ const BannerSlider = ({ banners = [] }) => {
   }, [currentSlide, currentBanner])
 
   if (!banners || banners.length === 0) {
+    // While the homepage request is in flight show a neutral skeleton; once
+    // loaded with nothing to show, render nothing rather than a placeholder image.
+    if (!loading) return null
     return (
       <section className="relative w-[96%] sm:w-[95%] lg:w-[94%] mx-auto overflow-hidden py-2 sm:py-3">
         <div className="w-full bg-gray-200 animate-pulse rounded-2xl aspect-[2475/849]" />
@@ -60,7 +61,8 @@ const BannerSlider = ({ banners = [] }) => {
   const renderBannerContent = (banner, fetchPriority = "auto") => {
     if (!banner) return null
 
-    const bannerImage = getFullImageUrl(banner.image) || FALLBACK_BANNER_IMAGE
+    const bannerImage = getFullImageUrl(banner.image)
+    if (!bannerImage) return null
 
     const content = (
       <div className="relative block w-full">

@@ -39,12 +39,24 @@ import config from "../config/config"
 
 
 const API_BASE_URL = `${config.API_URL}`
-const FALLBACK_HERO_BANNER = {
-  title: "top again 1",
-  image: "/placeholder.svg",
-  buttonLink: "/product-category/electronics-home/projectors",
-  link: "/product-category/electronics-home/projectors",
-  deviceType: "desktop",
+const HERO_BANNERS_CACHE_KEY = "seenalif_hero_banners_v1"
+
+const readCachedHeroBanners = () => {
+  try {
+    const raw = sessionStorage.getItem(HERO_BANNERS_CACHE_KEY)
+    const parsed = raw ? JSON.parse(raw) : null
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
+const writeCachedHeroBanners = (banners) => {
+  try {
+    sessionStorage.setItem(HERO_BANNERS_CACHE_KEY, JSON.stringify(Array.isArray(banners) ? banners : []))
+  } catch {
+    // ignore storage failures (private mode, quota)
+  }
 }
 const LIGHT_BANNER_FALLBACK = "lenovo-banner-768x290.jpg"
 const LIGHT_NETWORKING_DESKTOP_FALLBACK =
@@ -63,7 +75,7 @@ const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [banners, setBanners] = useState([])
-  const [heroBanners, setHeroBanners] = useState([])
+  const [heroBanners, setHeroBanners] = useState(readCachedHeroBanners)
   const [mobileBanners, setMobileBanners] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -366,6 +378,7 @@ const Home = () => {
         setCategories(leanValidCategories)
         setBanners(promotionalBanners)
         setHeroBanners(heroData)
+        writeCachedHeroBanners(heroData)
         setMobileBanners(mobileData)
         setHomeBanners(homeBannersData)
         setBrands(leanValidBrands)
@@ -954,12 +967,10 @@ const Home = () => {
         </div>
       )}
       <BannerSlider
-        banners={(() => {
-          const filtered = heroBanners.filter(
-            (banner) => banner.deviceType && banner.deviceType.toLowerCase() === deviceType.toLowerCase(),
-          )
-          return filtered.length ? filtered : [FALLBACK_HERO_BANNER]
-        })()}
+        loading={loading}
+        banners={heroBanners.filter(
+          (banner) => banner.deviceType && banner.deviceType.toLowerCase() === deviceType.toLowerCase(),
+        )}
       />
       {/* Categories Section - Admin Controlled Slider */}
       <CategorySliderUpdated onCategoryClick={handleCategoryClick} />
